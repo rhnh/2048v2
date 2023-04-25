@@ -1,0 +1,87 @@
+:root {
+  box-sizing: border-box;
+
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}
+
+.board {
+  display: grid;
+  display: inline-grid;
+  grid-template-rows: 100px 100px 100px 100px;
+  grid-template-columns: 100px 100px 100px 100px;
+
+  scroll-behavior: unset;
+}
+
+
+
+.board {
+  display: grid;
+  grid-template-rows: 80px 80px 80px 80px;
+  grid-template-columns: 80px 80px 80px 80px;
+  gap: .2em;
+}
+
+.box {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  background: cadetblue;
+  font-size: 36px;
+  text-align: center;
+  /* padding: 2em; */
+  line-height: 1.4;
+  color: aliceblue;
+  scroll-behavior: unset;
+}
+
+.hasZero {
+  color: transparent
+}
+
+.digit-4 {
+  font-size: 24px;
+  line-height: .6;
+}
+
+
+.message {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.553);
+  z-index: 10000;
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  animation: 1s ease-out 0s 1 slideInFromLeft;
+}
+
+@keyframes slideInFromLeft {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.message button {
+  max-width: 50%;
+}
