@@ -149,7 +149,7 @@ export function renderGameOver(container: HTMLElement) {
   message.appendChild(retry)
 }
 
-export function restart(
+export function renderNewGame(
   main: HTMLElement,
   xs: number[][],
   container: HTMLElement
@@ -157,3 +157,8 @@ export function restart(
   clearBoard(main)
   render(main, xs, container)
 }
+
+export const generate2DArray = (n: number) =>
+  Array.from(Array(n).keys()).map(() =>
+    Array.from(Array(n).keys()).map(() => 0)
+  )

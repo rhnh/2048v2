@@ -1,4 +1,10 @@
-import { iReverse, zeroLast, doubleSame, transpose } from "../src/utils/tools"
+import {
+  iReverse,
+  zeroLast,
+  doubleSame,
+  transpose,
+  generate2DArray,
+} from "../src/utils/tools"
 describe("First", () => {
   test("Not mut", () => {
     const arr = [1, 2, 3]
@@ -72,6 +78,18 @@ describe("Transpose", () => {
       [2, 2, 2, 2],
       [3, 3, 3, 3],
       [4, 4, 4, 4],
+    ])
+  })
+})
+
+describe("Generate 2d Array containing zeros ", () => {
+  const arr = generate2DArray(4)
+  test("generate2DArray", () => {
+    expect(arr).toEqual([
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
     ])
   })
 })

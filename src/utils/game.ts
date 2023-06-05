@@ -10,7 +10,7 @@ import {
   render,
   renderGameOver,
   clearBoard,
-  restart,
+  renderNewGame,
 } from "./tools"
 
 type baseFn = (xs: number[][]) => number[][]
@@ -29,7 +29,7 @@ export function game(
       cells = fillOneCell(cells, true)
       cells = fillOneCell(cells, true)
 
-      restart(board, cells, container)
+      renderNewGame(board, cells, container)
       return
     }
     //catch if the game is finished
