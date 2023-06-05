@@ -1,5 +1,3 @@
-import { hasSiblings } from "./state"
-
 export const iReverse = (xs: number[]) => xs.slice().reverse()
 const iArray = <T>(x: T[]) => Array.from(x)
 
@@ -109,7 +107,7 @@ export const moveRight = (xs: number[][]) =>
  * @param parent Takes an HTMLElement
  * @return return HTMLElement or null
  */
-export function rmPreviousChildNodes(parent: HTMLElement) {
+export function clearBoard(parent: HTMLElement) {
   while (parent.firstChild) {
     parent.removeChild(parent.firstChild)
   }
@@ -136,7 +134,7 @@ export function render(
   container.append(main)
 }
 
-export function gameOver(container: HTMLElement) {
+export function renderGameOver(container: HTMLElement) {
   // rmPreviousChildNodes(container)
   const message = document.createElement("section")
   message.className = "message"
@@ -156,6 +154,6 @@ export function restart(
   xs: number[][],
   container: HTMLElement
 ) {
-  rmPreviousChildNodes(main)
+  clearBoard(main)
   render(main, xs, container)
 }

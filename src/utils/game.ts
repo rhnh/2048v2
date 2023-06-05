@@ -8,11 +8,12 @@ import {
   moveRight,
   moveUp,
   render,
-  gameOver,
-  print,
-  rmPreviousChildNodes,
+  renderGameOver,
+  clearBoard,
   restart,
 } from "./tools"
+
+type baseFn = (xs: number[][]) => number[][]
 
 export function game(
   container: HTMLElement,
@@ -21,69 +22,60 @@ export function game(
   state: "playing" | "idle" | "finished"
 ) {
   addEventListener("keydown", (event: KeyboardEvent) => {
-    console.log(state)
     if (event.key === "r") {
       state = "idle"
       cells = empty(cells)
-      print(cells)
-      rmPreviousChildNodes(container)
+      clearBoard(container)
       cells = fillOneCell(cells, true)
       cells = fillOneCell(cells, true)
+
       restart(board, cells, container)
       return
     }
-    if (state === "finished" || (isGameOver(cells) && event.key !== "r")) return
-    if (event.key === "ArrowUp") {
-      rmPreviousChildNodes(board)
-      const temp = fillOneCell(moveUp(cells))
-      cells = temp
-      if (isEqual(temp, cells)) {
-        if (isGameOver(cells)) state = "finished"
-        render(board, cells, container)
-        if (state === "finished" || isGameOver(cells)) {
-          gameOver(container)
-          return
-        }
-      }
+    //catch if the game is finished
+    if (state === "finished" || (isGameOver(cells) && event.key !== "r")) {
+      renderGameOver(container)
+      return
     }
-    if (event.key === "ArrowLeft") {
-      rmPreviousChildNodes(board)
-      const temp = fillOneCell(moveLeft(cells))
-      cells = temp
-      if (isEqual(temp, cells)) {
-        if (isGameOver(cells)) state = "finished"
-        render(board, cells, container)
-        if (state === "finished" || isGameOver(cells)) {
-          gameOver(container)
-          return
-        }
-      }
+    if (event.key === "ArrowLeft" || event.key === "a" || event.key === "h") {
+      cells = renderCellsPerKey({ container, cells, board, fn: moveLeft })
     }
-    if (event.key === "ArrowRight") {
-      rmPreviousChildNodes(board)
-      const temp = fillOneCell(moveRight(cells))
-      cells = temp
-      if (isEqual(temp, cells)) {
-        if (isGameOver(cells)) state = "finished"
-        render(board, cells, container)
-        if (state === "finished" || isGameOver(cells)) {
-          gameOver(container)
-          return
-        }
-      }
+
+    if (event.key === "ArrowUp" || event.key === "w" || event.key === "k") {
+      cells = renderCellsPerKey({ container, cells, board, fn: moveUp })
     }
-    if (event.key === "ArrowDown") {
-      rmPreviousChildNodes(board)
-      const temp = fillOneCell(moveDown(cells))
-      cells = temp
-      if (isEqual(temp, cells)) {
-        if (isGameOver(cells)) state = "finished"
-        render(board, cells, container)
-        if (state === "finished" || isGameOver(cells)) {
-          gameOver(container)
-          return
-        }
-      }
+    if (event.key === "ArrowRight" || event.key === "d" || event.key === "l") {
+      cells = renderCellsPerKey({ container, cells, board, fn: moveRight })
+    }
+    if (event.key === "ArrowDown" || event.key === "s" || event.key === "j") {
+      cells = renderCellsPerKey({ container, cells, board, fn: moveDown })
     }
   })
+}
+
+const renderCellsPerKey = ({
+  cells,
+  board,
+  container,
+  fn,
+}: {
+  cells: number[][]
+  board: HTMLElement
+  container: HTMLElement
+  fn: baseFn
+}): number[][] => {
+  clearBoard(board)
+  const movedCells = fn(cells)
+  // if there is any legal move available
+  if (isEqual(movedCells, cells)) {
+    render(board, cells, container)
+    return cells
+  }
+  cells = fillOneCell(movedCells)
+  render(board, cells, container)
+  if (isGameOver(cells)) {
+    renderGameOver(container)
+    return cells
+  }
+  return cells
 }
