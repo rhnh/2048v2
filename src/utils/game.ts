@@ -11,10 +11,13 @@ import {
   renderGameOver,
   clearBoard,
   renderNewGame,
+  renderScore,
 } from "./tools"
 
 type baseFn = (xs: number[][]) => number[][]
-
+declare global {
+  var globalScore: number
+}
 export function game(
   container: HTMLElement,
   board: HTMLElement,
@@ -22,14 +25,11 @@ export function game(
   state: "playing" | "idle" | "finished"
 ) {
   addEventListener("keydown", (event: KeyboardEvent) => {
+    console.log(globalThis.globalScore)
+
     if (event.key === "r") {
       state = "idle"
-      cells = empty(cells)
-      clearBoard(container)
-      cells = fillOneCell(cells, true)
-      cells = fillOneCell(cells, true)
-
-      renderNewGame(board, cells, container)
+      reset({ cells, container, board })
       return
     }
     //catch if the game is finished
@@ -65,6 +65,7 @@ const renderCellsPerKey = ({
   fn: baseFn
 }): number[][] => {
   clearBoard(board)
+
   const movedCells = fn(cells)
   // if there is any legal move available
   if (isEqual(movedCells, cells)) {
@@ -72,10 +73,30 @@ const renderCellsPerKey = ({
     return cells
   }
   cells = fillOneCell(movedCells)
+  clearBoard(container)
+  renderScore(container)
   render(board, cells, container)
   if (isGameOver(cells)) {
     renderGameOver(container)
     return cells
   }
   return cells
+}
+
+const reset = ({
+  cells,
+  container,
+  board,
+}: {
+  cells: number[][]
+  board: HTMLElement
+  container: HTMLElement
+}) => {
+  cells = empty(cells)
+  clearBoard(container)
+  cells = fillOneCell(cells, true)
+  cells = fillOneCell(cells, true)
+  globalThis.globalScore = 0
+  renderScore(container)
+  renderNewGame(board, cells, container)
 }

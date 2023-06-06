@@ -14,13 +14,13 @@ export const doubleSame = (arr: number[]) => {
     if (x1 === x2) {
       xs[i - 1] = 2 * x1
       xs[i] = 0
+      globalThis.globalScore += x1 + x1
       return 2 * x1
     }
     return x2
   })
   return zeroLast(xs)
 }
-
 export const transpose = (xs: number[][]) => {
   const arr = iArray(xs).map((x) => iArray(x))
   return arr[0].map((_, i) => arr.map((y) => y[i]))
@@ -157,7 +157,11 @@ export function renderNewGame(
   clearBoard(main)
   render(main, xs, container)
 }
-
+export const renderScore = (container: HTMLElement) => {
+  const p = document.createElement("p")
+  p.innerHTML = `${globalThis.globalScore}`
+  container.appendChild(p)
+}
 export const generate2DArray = (n: number) =>
   Array.from(Array(n).keys()).map(() =>
     Array.from(Array(n).keys()).map(() => 0)
