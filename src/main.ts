@@ -15,11 +15,11 @@ globalThis.globalScore = 0
 cells = fillOneCell(cells, true)
 cells = fillOneCell(cells, true)
 print(cells)
-const container = document.createElement("article")
+const arena = document.createElement("article")
 const board = document.createElement("article")
-renderScore(container)
-container.className = "container"
+renderScore(arena)
+arena.className = "arena"
 board.className = "board"
 
-render(board, cells, container)
-game(container, board, cells, state)
+render(board, cells, arena)
+game(arena, board, cells, state)

@@ -114,11 +114,11 @@ export function clearBoard(parent: HTMLElement) {
 }
 
 export function render(
-  main: HTMLElement,
-  xs: number[][],
-  container: HTMLElement
+  board: HTMLElement,
+  cells: number[][],
+  arena: HTMLElement
 ) {
-  xs.map((row) => {
+  cells.map((row) => {
     row.map((column) => {
       const cell = document.createElement("div")
       cell.innerText = `${column}`
@@ -127,19 +127,18 @@ export function render(
       if (column === 0) {
         cell.className += ` hasZero`
       }
-      main.appendChild(cell)
+      board.appendChild(cell)
     })
   })
-  document.body.append(container)
-  container.append(main)
+  document.body.append(arena)
+  arena.append(board)
 }
 
-export function renderGameOver(container: HTMLElement) {
-  // rmPreviousChildNodes(container)
+export function renderGameOver(arena: HTMLElement) {
   const message = document.createElement("section")
   message.className = "message"
 
-  container.appendChild(message)
+  arena.appendChild(message)
   const retry = document.createElement("button")
 
   retry.innerText = "Try again"
@@ -151,18 +150,56 @@ export function renderGameOver(container: HTMLElement) {
 
 export function renderNewGame(
   main: HTMLElement,
-  xs: number[][],
-  container: HTMLElement
+  cells: number[][],
+  arena: HTMLElement
 ) {
   clearBoard(main)
-  render(main, xs, container)
+  render(main, cells, arena)
 }
-export const renderScore = (container: HTMLElement) => {
+export const renderScore = (arena: HTMLElement) => {
   const p = document.createElement("p")
   p.innerHTML = `${globalThis.globalScore}`
-  container.appendChild(p)
+  arena.appendChild(p)
 }
+/**
+ *
+ * @param n number of columns and rows
+ * @returns a2
+ */
 export const generate2DArray = (n: number) =>
   Array.from(Array(n).keys()).map(() =>
     Array.from(Array(n).keys()).map(() => 0)
   )
+
+export const hasSiblings = (xs: number[]) =>
+  [...Array.from(xs)]
+    .map((x, i) => {
+      const next = xs[i + 1]
+
+      if (next === undefined) return x
+      if (x === next) {
+        return -1
+      }
+      return x
+    })
+    .map((x) => x == -1)
+    .filter((x) => x === true).length > 0
+
+export const canMoveHorizontally = (xs: number[][]): boolean =>
+  Array.from(xs)
+    .map((x) => {
+      return hasSiblings(x)
+    })
+    .filter((x) => x === true).length !== 0
+
+export const canMoveVertically = (xs: number[][]) =>
+  canMoveHorizontally(transpose(Array.from(xs)))
+
+export const isGameOver = (xs: number[][]) =>
+  hasEmptyZeros(xs) && !canMoveVertically(xs) && !canMoveHorizontally(xs)
+
+export const empty = (xs: number[][]) =>
+  [...Array(xs.length)].map(() => Array(xs.length).fill(0))
+
+export const hasEmptyZeros = (xs: number[][]) =>
+  xs.flat().find((x) => x === 0) !== 0

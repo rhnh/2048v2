@@ -9,7 +9,7 @@ body {
   overflow: hidden;
 }
 
-.container {
+.arena {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -59,7 +59,7 @@ body {
 }
 
 
-.message {
+.game-over {
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -67,8 +67,8 @@ body {
   background-color: rgba(0, 0, 0, 0.553);
   z-index: 10000;
   position: absolute;
-  width: 400px;
-  height: 400px;
+  width: 100%;
+  height: auto;
   animation: 1s ease-out 0s 1 slideInFromLeft;
 }
 
@@ -82,6 +82,6 @@ body {
   }
 }
 
-.message button {
+.game-over button {
   max-width: 50%;
 }

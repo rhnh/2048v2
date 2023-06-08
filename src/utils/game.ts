@@ -1,5 +1,3 @@
-import { empty, isGameOver } from "./state"
-
 import {
   fillOneCell,
   isEqual,
@@ -12,6 +10,8 @@ import {
   clearBoard,
   renderNewGame,
   renderScore,
+  isGameOver,
+  empty,
 } from "./tools"
 
 type baseFn = (xs: number[][]) => number[][]
