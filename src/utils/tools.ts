@@ -113,11 +113,15 @@ export function clearBoard(parent: HTMLElement) {
   }
 }
 
-export function render(
-  board: HTMLElement,
-  cells: number[][],
+export function render({
+  arena,
+  cells,
+  board,
+}: {
+  board: HTMLElement
+  cells: number[][]
   arena: HTMLElement
-) {
+}) {
   cells.map((row) => {
     row.map((column) => {
       const cell = document.createElement("div")
@@ -130,13 +134,12 @@ export function render(
       board.appendChild(cell)
     })
   })
-  document.body.append(arena)
   arena.append(board)
 }
 
 export function renderGameOver(arena: HTMLElement) {
   const message = document.createElement("section")
-  message.className = "message"
+  message.className = "game-over"
 
   arena.appendChild(message)
   const retry = document.createElement("button")
@@ -149,12 +152,12 @@ export function renderGameOver(arena: HTMLElement) {
 }
 
 export function renderNewGame(
-  main: HTMLElement,
+  board: HTMLElement,
   cells: number[][],
   arena: HTMLElement
 ) {
-  clearBoard(main)
-  render(main, cells, arena)
+  clearBoard(board)
+  render({ board, cells, arena })
 }
 export const renderScore = (arena: HTMLElement) => {
   const p = document.createElement("p")

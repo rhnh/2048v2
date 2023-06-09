@@ -1,6 +1,7 @@
 import "./style.css"
 import { game } from "./utils/game"
 import {
+  clearBoard,
   fillOneCell,
   generate2DArray,
   print,
@@ -14,12 +15,20 @@ let state: "playing" | "idle" | "finished" = "idle"
 globalThis.globalScore = 0
 cells = fillOneCell(cells, true)
 cells = fillOneCell(cells, true)
-print(cells)
 const arena = document.createElement("article")
 const board = document.createElement("article")
-renderScore(arena)
-arena.className = "arena"
-board.className = "board"
+const messageBoard = document.createElement("article")
+const container = document.createElement("article")
+board.className += "board"
+arena.className += "arena"
+container.className += "container"
+messageBoard.className += "messageBoard"
 
-render(board, cells, arena)
-game(arena, board, cells, state)
+document.body.appendChild(container)
+container.appendChild(messageBoard)
+container.appendChild(arena)
+
+renderScore(messageBoard)
+
+render({ board, cells, arena })
+game({ arena, board, cells, state, messageBoard })
