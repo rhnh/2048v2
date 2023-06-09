@@ -206,3 +206,22 @@ export const empty = (xs: number[][]) =>
 
 export const hasEmptyZeros = (xs: number[][]) =>
   xs.flat().find((x) => x === 0) !== 0
+
+export const fillCells =
+  (cells: number[][], isInit: boolean) => (x: number) => {
+    let i = 0
+    while (i < x) {
+      cells = fillOneCell(cells, true)
+      i++
+    }
+    return cells
+  }
+
+export const boardStyle = (board: HTMLElement, boardSize: number) => {
+  board.style.display = "grid"
+  board.style.position = "relative"
+  const gridStyle = `100px `.repeat(boardSize)
+  board.style.gridTemplateColumns = gridStyle
+  board.style.gridTemplateRows = gridStyle
+  board.style.gap = "1px"
+}
