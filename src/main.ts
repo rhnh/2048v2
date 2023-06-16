@@ -1,10 +1,9 @@
 import "./style.css"
-import { game } from "./utils/game"
-import { createStartButton } from "./utils/layout"
+
+import { createElement, createStartButton } from "./utils/layout"
 import {
   boardStyle,
   clearBoard,
-  fillCells,
   generate2DArray,
   render,
   renderScore,
@@ -14,50 +13,61 @@ let cells = generate2DArray(boardSize)
 
 globalThis.globalScore = 0
 
-let board = document.createElement("article")
+let board = createElement("article")("board")
 boardStyle(board, boardSize)
 
-const initials = document.createElement("article")
-initials.className = "initials"
-const messageBoard = document.createElement("article")
+const initialBoard = createElement("article")("initials")
+const messageBoard = createElement("article")("messageBoard")
 const button = createStartButton({
-  plate: initials,
+  plate: initialBoard,
   board,
   cells,
   messageBoard,
 })
-const a = document.createElement("div")
-const container = document.createElement("article")
-const title = document.createElement("p")
+const area4 = createElement("div")("start-buttons-area")
+const area6 = createElement("div")("start-buttons-area")
+const area8 = createElement("div")("start-buttons-area")
+const detailArea = createElement("div")("start-buttons-area")
+const container = createElement("article")("container")
+const btnDetails = createElement("button")("button")
+const title = createElement("p")("title")
+const btn4 = button(4, "Play: 4x4")
+const btn8 = button(8, "Play: 8x8")
+const btn6 = button(6, "Play: 6x6")
 const target = boardSize * 512
-cells = fillCells(cells, true)(boardSize / 2)
-const buttonA = button(4, "Play: 4x4")
-a.appendChild(buttonA)
 
-const btn6x6 = button(8, "Play: 8x8")
-const buttonB = button(6, "Play: 6x6")
-a.className += "start-buttons-area"
-const b = document.createElement("div")
-b.appendChild(buttonB)
-b.className += "start-buttons-area"
-const c = document.createElement("div")
-c.className += "start-buttons-area"
-c.appendChild(btn6x6)
-const d = document.createElement("div")
-d.className += "start-buttons-area"
-const buttonD = document.createElement("button")
-buttonD.innerHTML = "Rules"
-d.appendChild(buttonD)
-initials.appendChild(a)
-initials.appendChild(b)
-initials.appendChild(c)
-initials.appendChild(d)
-board.appendChild(initials)
+area4.appendChild(btn4)
+area6.appendChild(btn6)
+area8.appendChild(btn8)
+
+const closeDetail = createElement("button")("close")
+closeDetail.innerHTML = "x"
+closeDetail.addEventListener("click", () => {
+  clearBoard(initialBoard)
+  area4.appendChild(btn4)
+  area6.appendChild(btn6)
+  area8.appendChild(btn8)
+  detailArea.appendChild(btnDetails)
+  initialBoard.classList.remove("initials-close")
+  initialBoard.classList.add("initials")
+  initialBoard.append(area4, area6, area8, detailArea)
+})
+
+btnDetails.addEventListener("click", () => {
+  clearBoard(initialBoard)
+  initialBoard.classList.remove("initials")
+  initialBoard.classList.add("initials-close")
+  initialBoard.appendChild(closeDetail)
+})
+btnDetails.innerHTML = "Rules"
+detailArea.appendChild(btnDetails)
+initialBoard.appendChild(area4)
+initialBoard.appendChild(area6)
+initialBoard.appendChild(area8)
+initialBoard.appendChild(detailArea)
+board.appendChild(initialBoard)
 
 title.innerHTML = `Game ${target}`
-board.className += "board"
-container.className += "container"
-messageBoard.className += "messageBoard"
 
 container.appendChild(title)
 document.body.appendChild(container)
