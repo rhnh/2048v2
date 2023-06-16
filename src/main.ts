@@ -15,7 +15,6 @@ globalThis.globalScore = 0
 cells = fillCells(cells, true)(boardSize / 2)
 const target = boardSize * 512
 
-const arena = document.createElement("article")
 const board = document.createElement("article")
 boardStyle(board, boardSize)
 const initials = document.createElement("article")
@@ -43,16 +42,13 @@ const title = document.createElement("p")
 
 title.innerHTML = `Game ${target}`
 board.className += "board"
-arena.className += "arena"
 container.className += "container"
 messageBoard.className += "messageBoard"
 
 container.appendChild(title)
 document.body.appendChild(container)
 container.appendChild(messageBoard)
-container.appendChild(arena)
-
 renderScore(messageBoard)
-
-render({ board, cells, arena })
-game({ arena, board, cells, state, messageBoard })
+container.appendChild(board)
+render({ board, cells })
+game({ board, cells, state, messageBoard })

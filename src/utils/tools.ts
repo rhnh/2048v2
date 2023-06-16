@@ -114,13 +114,11 @@ export function clearBoard(parent: HTMLElement) {
 }
 
 export function render({
-  arena,
   cells,
   board,
 }: {
   board: HTMLElement
   cells: number[][]
-  arena: HTMLElement
 }) {
   cells.map((row) => {
     row.map((column) => {
@@ -134,7 +132,6 @@ export function render({
       board.appendChild(cell)
     })
   })
-  arena.append(board)
 }
 
 export function renderGameOver(arena: HTMLElement) {
@@ -151,13 +148,9 @@ export function renderGameOver(arena: HTMLElement) {
   message.appendChild(retry)
 }
 
-export function renderNewGame(
-  board: HTMLElement,
-  cells: number[][],
-  arena: HTMLElement
-) {
+export function renderNewGame(board: HTMLElement, cells: number[][]) {
   clearBoard(board)
-  render({ board, cells, arena })
+  render({ board, cells })
 }
 export const renderScore = (arena: HTMLElement) => {
   const p = document.createElement("p")

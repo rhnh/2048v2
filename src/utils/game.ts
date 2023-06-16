@@ -19,13 +19,11 @@ declare global {
   var globalScore: number
 }
 export function game({
-  arena,
   state,
   cells,
   board,
   messageBoard,
 }: {
-  arena: HTMLElement
   board: HTMLElement
   messageBoard: HTMLElement
   cells: number[][]
@@ -35,18 +33,17 @@ export function game({
   addEventListener("keydown", (event: KeyboardEvent) => {
     if (event.key === "r") {
       state = "idle"
-      cells = reset({ cells, arena: arena, board, messageBoard })
+      cells = reset({ cells, board, messageBoard })
       return
     }
     const renderCells = renderCellsPerKey({
       cells,
       board,
-      arena,
       messageBoard,
     })
     //catch if the game is finished
     if (state === "finished" || (isGameOver(cells) && event.key !== "r")) {
-      renderGameOver(arena)
+      renderGameOver(board)
       return
     }
     if (event.key === "ArrowLeft" || event.key === "a" || event.key === "h") {
@@ -69,12 +66,10 @@ const renderCellsPerKey =
   ({
     cells,
     board,
-    arena,
     messageBoard,
   }: {
     cells: number[][]
     board: HTMLElement
-    arena: HTMLElement
     messageBoard: HTMLElement
   }) =>
   (fn: baseFn): number[][] => {
@@ -83,15 +78,15 @@ const renderCellsPerKey =
     const movedCells = fn(cells)
     // if there is any legal move available
     if (isEqual(movedCells, cells)) {
-      render({ board, cells, arena })
+      render({ board, cells })
       return cells
     }
     cells = fillOneCell(movedCells)
     clearBoard(messageBoard)
     renderScore(messageBoard)
-    render({ board, cells, arena })
+    render({ board, cells })
     if (isGameOver(cells)) {
-      renderGameOver(arena)
+      renderGameOver(board)
       return cells
     }
     return cells
@@ -99,22 +94,20 @@ const renderCellsPerKey =
 
 const reset = ({
   cells,
-  arena,
   board,
   messageBoard,
 }: {
   cells: number[][]
   board: HTMLElement
-  arena: HTMLElement
   messageBoard: HTMLElement
 }) => {
   cells = empty(cells)
-  clearBoard(arena)
+  clearBoard(board)
   cells = fillOneCell(cells, true)
   cells = fillOneCell(cells, true)
   globalThis.globalScore = 0
   clearBoard(messageBoard)
   renderScore(messageBoard)
-  renderNewGame(board, cells, arena)
+  renderNewGame(board, cells)
   return cells
 }
