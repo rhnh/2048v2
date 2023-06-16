@@ -211,7 +211,7 @@ export const fillCells =
   (cells: number[][], isInit: boolean) => (x: number) => {
     let i = 0
     while (i < x) {
-      cells = fillOneCell(cells, true)
+      cells = fillOneCell(cells, isInit)
       i++
     }
     return cells
@@ -220,8 +220,111 @@ export const fillCells =
 export const boardStyle = (board: HTMLElement, boardSize: number) => {
   board.style.display = "grid"
   board.style.position = "relative"
-  const gridStyle = `100px `.repeat(boardSize)
+  const width = window.innerWidth > 0 ? window.innerWidth : screen.width
+
+  const mq = window.matchMedia("(min-width: 320px)")
+  console.log(width, document.documentElement.clientWidth, mq, mq.matches)
+  const f = boardSizeScreen(boardSize, width)
+
+  const gridStyle = f
   board.style.gridTemplateColumns = gridStyle
   board.style.gridTemplateRows = gridStyle
   board.style.gap = "1px"
 }
+
+const boardSizeScreen = (boardSize: number, screenWidth: number) => {
+  let size: number = 150
+  if (boardSize === 4) {
+    size = boardSizeFour(screenWidth)
+  }
+  if (boardSize === 6) {
+    size = boardSizeSix(screenWidth)
+  }
+  if (boardSize === 8) {
+    size = boardSizeEight(screenWidth)
+  }
+  return `${size}px `.repeat(boardSize)
+}
+function boardSizeFour(screenWidth: number): number {
+  if (screenWidth <= xxSmallScreen320) {
+    return 76
+  }
+  if (screenWidth <= xSmallScreen360) {
+    return 88
+  }
+  if (screenWidth <= smallScreen375) {
+    return 92
+  }
+  if (screenWidth <= xxxMediumScreen384) {
+    return 94.5
+  }
+  if (screenWidth <= xxMediumScreen390) {
+    return 96
+  }
+  if (screenWidth <= xMediumScreen414) {
+    return 101.5
+  }
+  if (screenWidth <= largeScreen800) {
+    return 120
+  }
+  return 120
+}
+function boardSizeSix(screenWidth: number): number {
+  if (screenWidth <= xxSmallScreen320) {
+    return 50
+  }
+  if (screenWidth <= xSmallScreen360) {
+    return 60
+  }
+  if (screenWidth <= smallScreen375) {
+    return 61
+  }
+  if (screenWidth <= xxxMediumScreen384) {
+    return 62.5
+  }
+  if (screenWidth <= xxMediumScreen390) {
+    return 63.5
+  }
+  if (screenWidth <= xMediumScreen414) {
+    return 67
+  }
+  if (screenWidth <= mediumScreen428) {
+    return 67
+  }
+  if (screenWidth <= largeScreen800) {
+    return 90
+  }
+  return 76
+}
+function boardSizeEight(screenWidth: number) {
+  if (screenWidth <= xxSmallScreen320) {
+    return 38
+  }
+  if (screenWidth <= xSmallScreen360) {
+    return 43
+  }
+  if (screenWidth <= smallScreen375) {
+    return 46
+  }
+  if (screenWidth <= xxxMediumScreen384) {
+    return 46.5
+  }
+  if (screenWidth <= xxMediumScreen390) {
+    return 47.5
+  }
+  if (screenWidth <= xMediumScreen414) {
+    return 50
+  }
+  if (screenWidth <= largeScreen800) {
+    return 70
+  }
+  return 70
+}
+const xxSmallScreen320 = 320
+const xSmallScreen360 = 360
+const smallScreen375 = 375
+const xxxMediumScreen384 = 384
+const xxMediumScreen390 = 390
+const xMediumScreen414 = 414
+const mediumScreen428 = 428
+const largeScreen800 = 800

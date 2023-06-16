@@ -31,13 +31,19 @@ export function game({
   cells: number[][]
   state: "playing" | "idle" | "finished"
 }) {
+  if (state === "idle") return
   addEventListener("keydown", (event: KeyboardEvent) => {
     if (event.key === "r") {
       state = "idle"
       cells = reset({ cells, arena: arena, board, messageBoard })
       return
     }
-    const renderCells = renderCellsPerKey({ cells, board, arena, messageBoard })
+    const renderCells = renderCellsPerKey({
+      cells,
+      board,
+      arena,
+      messageBoard,
+    })
     //catch if the game is finished
     if (state === "finished" || (isGameOver(cells) && event.key !== "r")) {
       renderGameOver(arena)
