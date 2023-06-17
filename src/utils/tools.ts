@@ -122,7 +122,7 @@ export function render({
 }) {
   cells.map((row) => {
     row.map((column) => {
-      const cell = document.createElement("div")
+      const cell = document.createElement("section")
       cell.innerText = `${column}`
       const digit: string = `digit-${String(column).length}`
       cell.className = `box ${digit}`

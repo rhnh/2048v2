@@ -24,10 +24,10 @@ const button = createStartButton({
   cells,
   messageBoard,
 })
-const area4 = createElement("div")("start-buttons-area")
-const area6 = createElement("div")("start-buttons-area")
-const area8 = createElement("div")("start-buttons-area")
-const detailArea = createElement("div")("start-buttons-area")
+const area4 = createElement("section")("start-buttons-area")
+const area6 = createElement("section")("start-buttons-area")
+const area8 = createElement("section")("start-buttons-area")
+const detailArea = createElement("section")("start-buttons-area")
 const container = createElement("article")("container")
 const btnDetails = createElement("button")("button")
 const title = createElement("p")("title")
@@ -97,4 +97,22 @@ document.body.appendChild(container)
 container.appendChild(messageBoard)
 renderScore(messageBoard)
 container.appendChild(board)
+const restartBtn = createElement("button")("btn-restart")
+restartBtn.addEventListener("click", () => {
+  window.location.reload()
+})
+const end = createElement("article")("end")
+const ruleEnd = createElement("button")("rules-end")
+ruleEnd.addEventListener("click", () => {
+  clearBoard(initialBoard)
+  initialBoard.classList.remove("initials")
+  initialBoard.classList.add("initials-close")
+  initialBoard.appendChild(closeDetail)
+  initialBoard.appendChild(p)
+})
+ruleEnd.innerHTML = "Rules"
+end.append(restartBtn, ruleEnd)
+restartBtn.innerHTML = "Restart"
+container.appendChild(end)
+
 render({ board, cells })
