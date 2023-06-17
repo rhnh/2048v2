@@ -6,40 +6,6 @@ import {
   generate2DArray,
   render,
 } from "./tools"
-// export const boardLayout = (board: HTMLElement, boardSize: number) => {
-//   board.style.display = "grid"
-//   board.style.position = "relative"
-//   const gridStyle = `100px `.repeat(boardSize)
-//   board.style.gridTemplateColumns = gridStyle
-//   board.style.gridTemplateRows = gridStyle
-//   board.style.gap = "1px"
-// }
-// export function createButton(title: string): HTMLButtonElement {
-//   const button = document.createElement("button")
-//   button.className += `btn-${title.toLowerCase().replaceAll(" ", "-")}`
-//   button.innerHTML = title
-//   return button
-// }
-
-// export function baseLayout() {
-//   const arena = document.createElement("article")
-//   const board = document.createElement("article")
-//   const messageBoard = document.createElement("article")
-//   const container = document.createElement("article")
-//   const title = document.createElement("p")
-//   title.innerHTML = "Game 2048"
-//   board.className += "board"
-//   arena.className += "arena"
-//   container.className += "container"
-//   messageBoard.className += "messageBoard"
-//   container.appendChild(title)
-//   document.body.appendChild(container)
-//   container.appendChild(messageBoard)
-//   container.appendChild(arena)
-// }
-
-// export function layout() {}
-// export function setting() {}
 
 export const createElement =
   (tag: keyof HTMLElementTagNameMap) =>

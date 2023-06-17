@@ -257,6 +257,9 @@ function boardSizeFour(screenWidth: number): number {
   if (screenWidth <= xMediumScreen414) {
     return 101.5
   }
+  if (screenWidth <= mediumScreen428) {
+    return 105
+  }
   if (screenWidth <= largeScreen800) {
     return 120
   }
@@ -282,7 +285,7 @@ function boardSizeSix(screenWidth: number): number {
     return 67
   }
   if (screenWidth <= mediumScreen428) {
-    return 67
+    return 70
   }
   if (screenWidth <= largeScreen800) {
     return 90
@@ -307,6 +310,9 @@ function boardSizeEight(screenWidth: number) {
   }
   if (screenWidth <= xMediumScreen414) {
     return 50
+  }
+  if (screenWidth <= mediumScreen428) {
+    return 52
   }
   if (screenWidth <= largeScreen800) {
     return 70

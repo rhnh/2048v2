@@ -52,12 +52,35 @@ closeDetail.addEventListener("click", () => {
   initialBoard.classList.add("initials")
   initialBoard.append(area4, area6, area8, detailArea)
 })
-
+closeDetail.style.color = "red"
+const p = createElement("p")("rules-p")
+p.innerHTML = `<strong>Press Keys</strong> <br/><br/> 
+1. Arrow keys <br/><br/>
+2. vim keys <br/><br/> 
+3. a,w,s,d to move Left, up, down and right
+<br/>
+<br/>
+<strong>Rules</strong>
+<br/>
+<br/>
+If you reach 2048 in 4x4,
+<br/> 3072 in 6x6,
+<br/> 4096 in 8x8.
+ <br/> You will win! <br/>
+ <br/>
+ <strong>
+ Good luck
+ </strong>
+`
+p.style.color = "white"
+p.style.paddingTop = "2em"
+p.style.paddingLeft = "2em"
 btnDetails.addEventListener("click", () => {
   clearBoard(initialBoard)
   initialBoard.classList.remove("initials")
   initialBoard.classList.add("initials-close")
   initialBoard.appendChild(closeDetail)
+  initialBoard.appendChild(p)
 })
 btnDetails.innerHTML = "Rules"
 detailArea.appendChild(btnDetails)
