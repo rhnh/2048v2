@@ -1,6 +1,13 @@
 :root {
   box-sizing: border-box;
-
+  --blue00: #81D4FA;
+  --blue10: #8babf1;
+  --blue20: #0073e6;
+  --blue30: #283593;
+  --green00: #9CCC65;
+  --green10: #66BB6A;
+  --green20: #388E3C;
+  --green30: #33691E;
 }
 
 body {
@@ -48,12 +55,12 @@ body {
   justify-content: center;
   align-content: center;
   align-items: center;
-  background: cadetblue;
+  background: rgb(215, 223, 227);
   font-size: 36px;
   text-align: center;
   /* padding: 2em; */
   line-height: 1.4;
-  color: aliceblue;
+  color: white;
   scroll-behavior: unset;
 }
 
@@ -131,10 +138,10 @@ body {
 }
 
 button {
-  background-color: #4CAF50;
+  background-color: #b51963;
   /* Green */
   border: none;
-  color: white;
+  color: #ffffff;
   padding: 15px 32px;
   text-align: center;
   text-decoration: none;
@@ -143,7 +150,7 @@ button {
 }
 
 .close {
-  color: white;
+  color: #ffffff;
   float: right;
   font-size: 28px;
   font-weight: bold;
@@ -155,6 +162,6 @@ button {
 }
 
 .close:focus {
-  color: #000;
+  color: #ffffff;
   text-decoration: none;
 }

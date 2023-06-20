@@ -36,6 +36,7 @@ export function game({
       cells = reset({ cells, board, messageBoard })
       return
     }
+
     const renderCells = renderCellsPerKey({
       cells,
       board,

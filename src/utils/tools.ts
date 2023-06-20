@@ -1,3 +1,5 @@
+import { getColorShade } from "./colors"
+
 export const iReverse = (xs: number[]) => xs.slice().reverse()
 const iArray = <T>(x: T[]) => Array.from(x)
 
@@ -113,6 +115,39 @@ export function clearBoard(parent: HTMLElement) {
   }
 }
 
+const getColorShades = (n: number) => {
+  if (n === 0) {
+    return "eeee"
+  }
+
+  if (n <= 16) {
+    return getColorShade("00bbf9", n / 2)
+  }
+  if (n >= 32 && n <= 128) {
+    return getColorShade("e7c6ff", n / 32)
+  }
+  if (n > 128 && n <= 512) {
+    return getColorShade("57cc99", n / 256)
+  }
+  if (n > 1024 && n <= 4096) {
+    return getColorShade("c1121f", n / 1024)
+  }
+
+  if (n >= 4096 && n < 16384) {
+    return getColorShade("9b5de5", n / 4096)
+  }
+  if (n >= 1024 && n < 4096) {
+    return getColorShade("ce4257", n / 1024)
+  }
+  if (n >= 4096 && n <= 16384) {
+    return getColorShade("ffbd00", n / 4096)
+  }
+  if (n >= 16384 && n <= 49152) {
+    return getColorShade("390099", n / 16384)
+  }
+  return "ff0000"
+}
+
 export function render({
   cells,
   board,
@@ -121,12 +156,17 @@ export function render({
   cells: number[][]
 }) {
   cells.map((row) => {
-    row.map((column) => {
+    row.map((cellValue: number) => {
       const cell = document.createElement("section")
-      cell.innerText = `${column}`
-      const digit: string = `digit-${String(column).length}`
+      cell.innerText = `${cellValue}`
+      const digit: string = `digit-${String(cellValue).length}`
       cell.className = `box ${digit}`
-      if (column === 0) {
+
+      const bg = getColorShades(cellValue)
+      // console.log(bg, "color", cellValue)
+      cell.style.backgroundColor = `#${bg}`
+
+      if (cellValue === 0) {
         cell.className += ` hasZero`
       }
       board.appendChild(cell)
@@ -216,7 +256,7 @@ export const boardStyle = (board: HTMLElement, boardSize: number) => {
   const width = window.innerWidth > 0 ? window.innerWidth : screen.width
 
   const mq = window.matchMedia("(min-width: 320px)")
-  console.log(width, document.documentElement.clientWidth, mq, mq.matches)
+  // console.log(width, document.documentElement.clientWidth, mq, mq.matches)
   const f = boardSizeScreen(boardSize, width)
 
   const gridStyle = f

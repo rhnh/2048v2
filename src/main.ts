@@ -8,25 +8,22 @@ import {
   render,
   renderScore,
 } from "./utils/tools"
+globalThis.globalScore = 0
 let boardSize = 4
 let cells = generate2DArray(boardSize)
-
-globalThis.globalScore = 0
-
 let board = createElement("article")("board")
 boardStyle(board, boardSize)
-
-const initialBoard = createElement("article")("initials")
+const selectionArea = createElement("article")("initials")
 const messageBoard = createElement("article")("messageBoard")
 const button = createStartButton({
-  plate: initialBoard,
+  plate: selectionArea,
   board,
   cells,
   messageBoard,
 })
-const area4 = createElement("section")("start-buttons-area")
-const area6 = createElement("section")("start-buttons-area")
-const area8 = createElement("section")("start-buttons-area")
+const smallArea = createElement("section")("start-buttons-area")
+const mediumArea = createElement("section")("start-buttons-area")
+const hugeArea = createElement("section")("start-buttons-area")
 const detailArea = createElement("section")("start-buttons-area")
 const container = createElement("article")("container")
 const btnDetails = createElement("button")("button")
@@ -36,32 +33,32 @@ const btn8 = button(8, "Play: 8x8")
 const btn6 = button(6, "Play: 6x6")
 const target = boardSize * 512
 
-area4.appendChild(btn4)
-area6.appendChild(btn6)
-area8.appendChild(btn8)
+smallArea.appendChild(btn4)
+mediumArea.appendChild(btn6)
+hugeArea.appendChild(btn8)
 
 const closeDetail = createElement("button")("close")
+
 closeDetail.innerHTML = "x"
 closeDetail.addEventListener("click", () => {
-  clearBoard(initialBoard)
-  area4.appendChild(btn4)
-  area6.appendChild(btn6)
-  area8.appendChild(btn8)
+  clearBoard(selectionArea)
+  smallArea.appendChild(btn4)
+  mediumArea.appendChild(btn6)
+  hugeArea.appendChild(btn8)
   detailArea.appendChild(btnDetails)
-  initialBoard.classList.remove("initials-close")
-  initialBoard.classList.add("initials")
-  initialBoard.append(area4, area6, area8, detailArea)
+  selectionArea.classList.remove("initials-close")
+  selectionArea.classList.add("initials")
+  selectionArea.append(smallArea, mediumArea, hugeArea, detailArea)
 })
 closeDetail.style.color = "red"
-const p = createElement("p")("rules-p")
-p.innerHTML = `<strong>Press Keys</strong> <br/><br/> 
-1. Arrow keys <br/><br/>
-2. vim keys <br/><br/> 
+const infoElem = createElement("p")("rules-p")
+infoElem.innerHTML = `<strong>Press Keys</strong> <br/><br/> 
+1. Arrow keys <br/>
+2. vim keys <br/> 
 3. a,w,s,d to move Left, up, down and right
 <br/>
 <br/>
 <strong>Rules</strong>
-<br/>
 <br/>
 If you reach 2048 in 4x4,
 <br/> 3072 in 6x6,
@@ -72,23 +69,23 @@ If you reach 2048 in 4x4,
  Good luck
  </strong>
 `
-p.style.color = "white"
-p.style.paddingTop = "2em"
-p.style.paddingLeft = "2em"
+infoElem.style.color = "white"
+infoElem.style.paddingTop = "1em"
+infoElem.style.paddingLeft = "2em"
 btnDetails.addEventListener("click", () => {
-  clearBoard(initialBoard)
-  initialBoard.classList.remove("initials")
-  initialBoard.classList.add("initials-close")
-  initialBoard.appendChild(closeDetail)
-  initialBoard.appendChild(p)
+  clearBoard(selectionArea)
+  selectionArea.classList.remove("initials")
+  selectionArea.classList.add("initials-close")
+  selectionArea.appendChild(closeDetail)
+  selectionArea.appendChild(infoElem)
 })
-btnDetails.innerHTML = "Rules"
+btnDetails.innerHTML = "Details"
 detailArea.appendChild(btnDetails)
-initialBoard.appendChild(area4)
-initialBoard.appendChild(area6)
-initialBoard.appendChild(area8)
-initialBoard.appendChild(detailArea)
-board.appendChild(initialBoard)
+selectionArea.appendChild(smallArea)
+selectionArea.appendChild(mediumArea)
+selectionArea.appendChild(hugeArea)
+selectionArea.appendChild(detailArea)
+board.appendChild(selectionArea)
 
 title.innerHTML = `Game ${target}`
 
@@ -101,18 +98,18 @@ const restartBtn = createElement("button")("btn-restart")
 restartBtn.addEventListener("click", () => {
   window.location.reload()
 })
-const end = createElement("article")("end")
-const ruleEnd = createElement("button")("rules-end")
-ruleEnd.addEventListener("click", () => {
-  clearBoard(initialBoard)
-  initialBoard.classList.remove("initials")
-  initialBoard.classList.add("initials-close")
-  initialBoard.appendChild(closeDetail)
-  initialBoard.appendChild(p)
+const infoAreaElem = createElement("article")("end")
+const detailInfoBtn = createElement("button")("rules-end")
+detailInfoBtn.addEventListener("click", () => {
+  clearBoard(selectionArea)
+  selectionArea.classList.remove("initials")
+  selectionArea.classList.add("initials-close")
+  selectionArea.appendChild(closeDetail)
+  selectionArea.appendChild(infoElem)
 })
-ruleEnd.innerHTML = "Rules"
-end.append(restartBtn, ruleEnd)
+detailInfoBtn.innerHTML = "Details"
+infoAreaElem.append(restartBtn, detailInfoBtn)
 restartBtn.innerHTML = "Restart"
-container.appendChild(end)
+container.appendChild(infoAreaElem)
 
 render({ board, cells })

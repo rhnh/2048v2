@@ -42,7 +42,7 @@ export const createStartButton =
       boardStyle(board, boardSize)
       cells = generate2DArray(boardSize)
       cells = fillCells(cells, true)(boardSize / 2)
-      console.log(cells)
+      // console.log(cells)
       render({ cells, board })
       game({ state: "playing", cells, messageBoard, board })
     })
