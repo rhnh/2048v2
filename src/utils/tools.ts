@@ -1,6 +1,4 @@
-import { getColorShade } from "./colors"
-
-export const iReverse = (xs: number[]) => xs.slice().reverse()
+const iReverse = (xs: number[]) => xs.slice().reverse()
 const iArray = <T>(x: T[]) => Array.from(x)
 
 export const zeroLast = (xs: number[]) => {
@@ -36,7 +34,7 @@ export function print(xs: number[][]) {
     }
     str += " \n"
   }
-  console.log(str)
+  console.info(str)
 }
 /**
  *
@@ -115,88 +113,6 @@ export function clearBoard(parent: HTMLElement) {
   }
 }
 
-const getColorShades = (n: number) => {
-  if (n === 0) {
-    return "eeee"
-  }
-
-  if (n <= 16) {
-    return getColorShade("00bbf9", n / 2)
-  }
-  if (n >= 32 && n <= 128) {
-    return getColorShade("e7c6ff", n / 32)
-  }
-  if (n > 128 && n <= 512) {
-    return getColorShade("57cc99", n / 256)
-  }
-  if (n > 1024 && n <= 4096) {
-    return getColorShade("c1121f", n / 1024)
-  }
-
-  if (n >= 4096 && n < 16384) {
-    return getColorShade("9b5de5", n / 4096)
-  }
-  if (n >= 1024 && n < 4096) {
-    return getColorShade("ce4257", n / 1024)
-  }
-  if (n >= 4096 && n <= 16384) {
-    return getColorShade("ffbd00", n / 4096)
-  }
-  if (n >= 16384 && n <= 49152) {
-    return getColorShade("390099", n / 16384)
-  }
-  return "ff0000"
-}
-
-export function render({
-  cells,
-  board,
-}: {
-  board: HTMLElement
-  cells: number[][]
-}) {
-  cells.map((row) => {
-    row.map((cellValue: number) => {
-      const cell = document.createElement("section")
-      cell.innerText = `${cellValue}`
-      const digit: string = `digit-${String(cellValue).length}`
-      cell.className = `box ${digit}`
-
-      const bg = getColorShades(cellValue)
-      // console.log(bg, "color", cellValue)
-      cell.style.backgroundColor = `#${bg}`
-
-      if (cellValue === 0) {
-        cell.className += ` hasZero`
-      }
-      board.appendChild(cell)
-    })
-  })
-}
-
-export function renderGameOver(arena: HTMLElement) {
-  const message = document.createElement("section")
-  message.className = "game-over"
-
-  arena.appendChild(message)
-  const retry = document.createElement("button")
-
-  retry.innerText = "Try again"
-  retry.onclick = () => {
-    window.location.reload()
-  }
-  message.appendChild(retry)
-}
-
-export function renderNewGame(board: HTMLElement, cells: number[][]) {
-  clearBoard(board)
-  render({ board, cells })
-}
-export const renderScore = (arena: HTMLElement) => {
-  const p = document.createElement("p")
-  p.innerHTML = `${globalThis.globalScore}`
-  arena.appendChild(p)
-}
 /**
  *
  * @param n number of columns and rows
@@ -249,121 +165,3 @@ export const fillCells =
     }
     return cells
   }
-
-export const boardStyle = (board: HTMLElement, boardSize: number) => {
-  board.style.display = "grid"
-  board.style.position = "relative"
-  const width = window.innerWidth > 0 ? window.innerWidth : screen.width
-
-  const mq = window.matchMedia("(min-width: 320px)")
-  // console.log(width, document.documentElement.clientWidth, mq, mq.matches)
-  const f = boardSizeScreen(boardSize, width)
-
-  const gridStyle = f
-  board.style.gridTemplateColumns = gridStyle
-  board.style.gridTemplateRows = gridStyle
-  board.style.gap = "1px"
-}
-
-const boardSizeScreen = (boardSize: number, screenWidth: number) => {
-  let size: number = 150
-  if (boardSize === 4) {
-    size = boardSizeFour(screenWidth)
-  }
-  if (boardSize === 6) {
-    size = boardSizeSix(screenWidth)
-  }
-  if (boardSize === 8) {
-    size = boardSizeEight(screenWidth)
-  }
-  return `${size}px `.repeat(boardSize)
-}
-function boardSizeFour(screenWidth: number): number {
-  if (screenWidth <= xxSmallScreen320) {
-    return 76
-  }
-  if (screenWidth <= xSmallScreen360) {
-    return 88
-  }
-  if (screenWidth <= smallScreen375) {
-    return 92
-  }
-  if (screenWidth <= xxxMediumScreen384) {
-    return 94.5
-  }
-  if (screenWidth <= xxMediumScreen390) {
-    return 96
-  }
-  if (screenWidth <= xMediumScreen414) {
-    return 101.5
-  }
-  if (screenWidth <= mediumScreen428) {
-    return 105
-  }
-  if (screenWidth <= largeScreen800) {
-    return 120
-  }
-  return 120
-}
-function boardSizeSix(screenWidth: number): number {
-  if (screenWidth <= xxSmallScreen320) {
-    return 50
-  }
-  if (screenWidth <= xSmallScreen360) {
-    return 60
-  }
-  if (screenWidth <= smallScreen375) {
-    return 61
-  }
-  if (screenWidth <= xxxMediumScreen384) {
-    return 62.5
-  }
-  if (screenWidth <= xxMediumScreen390) {
-    return 63.5
-  }
-  if (screenWidth <= xMediumScreen414) {
-    return 67
-  }
-  if (screenWidth <= mediumScreen428) {
-    return 70
-  }
-  if (screenWidth <= largeScreen800) {
-    return 90
-  }
-  return 76
-}
-function boardSizeEight(screenWidth: number) {
-  if (screenWidth <= xxSmallScreen320) {
-    return 38
-  }
-  if (screenWidth <= xSmallScreen360) {
-    return 43
-  }
-  if (screenWidth <= smallScreen375) {
-    return 46
-  }
-  if (screenWidth <= xxxMediumScreen384) {
-    return 46.5
-  }
-  if (screenWidth <= xxMediumScreen390) {
-    return 47.5
-  }
-  if (screenWidth <= xMediumScreen414) {
-    return 50
-  }
-  if (screenWidth <= mediumScreen428) {
-    return 52
-  }
-  if (screenWidth <= largeScreen800) {
-    return 70
-  }
-  return 70
-}
-const xxSmallScreen320 = 320
-const xSmallScreen360 = 360
-const smallScreen375 = 375
-const xxxMediumScreen384 = 384
-const xxMediumScreen390 = 390
-const xMediumScreen414 = 414
-const mediumScreen428 = 428
-const largeScreen800 = 800

@@ -50,6 +50,7 @@ body {
   gap: .2em;
 } */
 
+
 .box {
   display: flex;
   justify-content: center;
@@ -62,6 +63,7 @@ body {
   line-height: 1.4;
   color: white;
   scroll-behavior: unset;
+
 }
 
 .hasZero {

@@ -13,7 +13,7 @@ const chain = (x: unknown) => {
 }
 const id = (x: any) => x
 const log = (x: any) => {
-  console.log(x)
+  console.info(x)
   return x
 }
 /* ############################################### */
@@ -90,6 +90,5 @@ export const getColorShade = (baseColor: string, n: number) => {
     .map(everyHexToRGB)
     .map((x) => shade(x, n))
     .map(rgbToHex)
-    .map(log)
     .fold(id)
 }

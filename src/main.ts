@@ -1,13 +1,13 @@
 import "./style.css"
 
-import { createElement, createStartButton } from "./utils/layout"
 import {
   boardStyle,
-  clearBoard,
-  generate2DArray,
+  createElement,
+  createStartButton,
   render,
   renderScore,
-} from "./utils/tools"
+} from "./utils/layout"
+import { clearBoard, generate2DArray } from "./utils/tools"
 globalThis.globalScore = 0
 let boardSize = 4
 let cells = generate2DArray(boardSize)

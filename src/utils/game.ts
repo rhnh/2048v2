@@ -1,3 +1,4 @@
+import { render, renderGameOver, renderNewGame, renderScore } from "./layout"
 import {
   fillOneCell,
   isEqual,
@@ -5,11 +6,7 @@ import {
   moveLeft,
   moveRight,
   moveUp,
-  render,
-  renderGameOver,
   clearBoard,
-  renderNewGame,
-  renderScore,
   isGameOver,
   empty,
 } from "./tools"
