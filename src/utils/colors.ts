@@ -65,17 +65,21 @@ const intToHexColor = (rgbInt: number): string => {
   return Math.min(Math.max(Math.round(rgbInt), 0), 255).toString(16)
 }
 
-const everyHexToRGB = (str: string[]): RGBType => ({
+const hexArrayToRGB = (str: string[]): RGBType => ({
   red: parseHexToRGB(str[0]),
   green: parseHexToRGB(str[1]),
   blue: parseHexToRGB(str[2]),
 })
-
-const fill = (str: string) => {
-  if (str.length === 1) {
-    return str + str
+/**
+ * @info - Takes an hexadecimal value, and returns hexadecimal
+ * @param hex - takes an hex
+ * @returns  returns
+ */
+const fill = (hex: string) => {
+  if (hex.length === 1) {
+    return hex + 0
   }
-  return str
+  return hex
 }
 const rgbToHex = (rgb: RGBType): string =>
   fill(intToHexColor(rgb.red)) +
@@ -84,11 +88,55 @@ const rgbToHex = (rgb: RGBType): string =>
 
 export const getColorShade = (baseColor: string, n: number) => {
   return chain(baseColor)
-    .map(removeTag)
-    .map(expandHex)
-    .map(pairs)
-    .map(everyHexToRGB)
-    .map((x) => shade(x, n))
-    .map(rgbToHex)
-    .fold(id)
+    .map(removeTag) //removes #
+    .map(expandHex) // if baseColor is shorten hex, expands to full 6 digit hex
+    .map(pairs) // divides into 3 pairs, returns an array
+    .map(hexArrayToRGB) //[hex,hex,hex] to RGB
+    .map((x) => shade(x, n)) // return the shades
+    .map(rgbToHex) //converts RGB to Hexadecimal
+    .fold(id) // returns the value
+}
+
+export const getColorShades = (
+  n: number,
+  baseColor: string,
+  color1: string,
+  color2: string,
+  color3: string,
+  color4: string,
+  color5: string,
+  color6: string,
+  color7: string,
+  color8: string,
+) => {
+  if (n === 0) {
+    return baseColor
+  }
+
+  if (n <= 16) {
+    return getColorShade(color1, n / 2)
+  }
+  if (n >= 32 && n <= 128) {
+    return getColorShade(color2, n / 32)
+  }
+  if (n > 128 && n <= 512) {
+    return getColorShade(color3, n / 256)
+  }
+  if (n > 1024 && n <= 4096) {
+    return getColorShade(color4, n / 1024)
+  }
+
+  if (n >= 4096 && n < 16384) {
+    return getColorShade(color5, n / 4096)
+  }
+  if (n >= 1024 && n < 4096) {
+    return getColorShade(color6, n / 1024)
+  }
+  if (n >= 4096 && n <= 16384) {
+    return getColorShade(color7, n / 4096)
+  }
+  if (n >= 16384 && n <= 49152) {
+    return getColorShade(color8, n / 16384)
+  }
+  return "#3949AB"
 }

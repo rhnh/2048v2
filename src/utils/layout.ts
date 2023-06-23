@@ -1,6 +1,6 @@
-import { getColorShade } from "./colors"
+import { getColorShades } from "./colors"
 import { game } from "./game"
-import { getWidth } from "./mq"
+import { getFontSize, getWidth } from "./mq"
 import { clearBoard, fillCells, generate2DArray } from "./tools"
 
 export const createElement =
@@ -29,11 +29,10 @@ export const createStartButton =
     button.addEventListener("click", () => {
       board.removeChild(plate)
       clearBoard(board)
-
       boardStyle(board, boardSize)
       cells = generate2DArray(boardSize)
       cells = fillCells(cells, true)(boardSize / 2)
-      render({ cells, board })
+      renderCells({ cells, board })
       game({ state: "playing", cells, messageBoard, board })
     })
 
@@ -41,54 +40,69 @@ export const createStartButton =
   }
 
 const createButton = createElement("button")
-
+/**
+ *
+ * @param board
+ * @param boardSize
+ */
 export const boardStyle = (board: HTMLElement, boardSize: number) => {
   board.style.display = "grid"
   board.style.position = "relative"
   const width = window.innerWidth > 0 ? window.innerWidth : screen.width
-
   const size = getWidth(boardSize, width)
-
   const gridStyle = size
   board.style.gridTemplateColumns = gridStyle
   board.style.gridTemplateRows = gridStyle
   board.style.gap = "1px"
 }
 
-const getColorShades = (n: number) => {
-  if (n === 0) {
-    return "e5e5e5"
-  }
+/**
+ *
+ * @param param0
+ */
+const cellStyle = ({
+  cellValue,
+  cell,
+  boardSize,
+}: {
+  cellValue: number
+  boardSize: number
+  cell: HTMLElement
+}) => {
+  const width = window.innerWidth > 0 ? window.innerWidth : screen.width
 
-  if (n <= 16) {
-    return getColorShade("00bbf9", n / 2)
-  }
-  if (n >= 32 && n <= 128) {
-    return getColorShade("e7c6ff", n / 32)
-  }
-  if (n > 128 && n <= 512) {
-    return getColorShade("57cc99", n / 256)
-  }
-  if (n > 1024 && n <= 4096) {
-    return getColorShade("c1121f", n / 1024)
-  }
+  cell.className = `cell `
+  const bgColor = getColorShades(
+    cellValue,
+    "#476675",
+    "#fd3",
+    "#CDDC39",
+    "#03A9F4",
+    "#fd3",
+    "#fd3",
+    "#fd3",
+    "#fd3",
+    "#3949AB",
+  )
 
-  if (n >= 4096 && n < 16384) {
-    return getColorShade("9b5de5", n / 4096)
+  cell.style.backgroundColor = `#${bgColor}`
+
+  const digitLength = cellValue.toString().length
+  cell.style.fontSize = getFontSize({
+    boardSize,
+    actualScreenWidth: width,
+    digitLength,
+  })
+  if (cellValue === 0) {
+    cell.className += ` hasZero`
   }
-  if (n >= 1024 && n < 4096) {
-    return getColorShade("ce4257", n / 1024)
-  }
-  if (n >= 4096 && n <= 16384) {
-    return getColorShade("ffbd00", n / 4096)
-  }
-  if (n >= 16384 && n <= 49152) {
-    return getColorShade("390099", n / 16384)
-  }
-  return "ff0000"
 }
 
-export function render({
+/**
+ *
+ * @param param0
+ */
+export function renderCells({
   cells,
   board,
 }: {
@@ -99,20 +113,15 @@ export function render({
     row.map((cellValue: number) => {
       const cell = document.createElement("section")
       cell.innerText = cellValue === 0 ? "" : `${cellValue}`
-      const digit: string = `digit-${String(cellValue).length}`
-      cell.className = `box ${digit}`
-
-      const bg = getColorShades(cellValue)
-      cell.style.backgroundColor = `#${bg}`
-
-      if (cellValue === 0) {
-        cell.className += ` hasZero`
-      }
+      cellStyle({ cell, cellValue, boardSize: cells.length })
       board.appendChild(cell)
     })
   })
 }
-
+/**
+ *
+ * @param arena
+ */
 export function renderGameOver(arena: HTMLElement) {
   const message = document.createElement("section")
   message.className = "game-over"
@@ -126,11 +135,19 @@ export function renderGameOver(arena: HTMLElement) {
   }
   message.appendChild(retry)
 }
-
+/**
+ *
+ * @param board
+ * @param cells
+ */
 export function renderNewGame(board: HTMLElement, cells: number[][]) {
   clearBoard(board)
-  render({ board, cells })
+  renderCells({ board, cells })
 }
+/**
+ *
+ * @param arena
+ */
 export const renderScore = (arena: HTMLElement) => {
   const p = document.createElement("p")
   p.innerHTML = `${globalThis.globalScore}`

@@ -4,7 +4,7 @@ import {
   boardStyle,
   createElement,
   createStartButton,
-  render,
+  renderCells,
   renderScore,
 } from "./utils/layout"
 import { clearBoard, generate2DArray } from "./utils/tools"
@@ -112,4 +112,4 @@ infoAreaElem.append(restartBtn, detailInfoBtn)
 restartBtn.innerHTML = "Restart"
 container.appendChild(infoAreaElem)
 
-render({ board, cells })
+renderCells({ board, cells })

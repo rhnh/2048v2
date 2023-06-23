@@ -16,6 +16,7 @@ body {
   overflow: hidden;
 }
 
+
 .arena,
 .container {
   display: flex;
@@ -32,39 +33,9 @@ body {
   gap: 1em;
 }
 
-/* .board {
-  display: grid;
-  display: inline-grid;
-  grid-template-rows: 100px 100px 100px 100px;
-  grid-template-columns: 100px 100px 100px 100px;
-  position: relative;
-  scroll-behavior: unset;
-}
 
 
 
-.board {
-  display: grid;
-  grid-template-rows: 80px 80px 80px 80px;
-  grid-template-columns: 80px 80px 80px 80px;
-  gap: .2em;
-} */
-
-
-.box {
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  align-items: center;
-  background: rgb(215, 223, 227);
-  font-size: 36px;
-  text-align: center;
-  /* padding: 2em; */
-  line-height: 1.4;
-  color: white;
-  scroll-behavior: unset;
-
-}
 
 .hasZero {
   color: transparent
@@ -104,17 +75,6 @@ body {
   max-width: 50%;
 }
 
-/* @media only screen and (max-width: 600px) {
-  body {
-    background-color: greenyellow;
-  }
-
-  .board {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    grid-auto-rows: 0.2fr
-  }
-} */
 
 .initials {
   position: absolute;
@@ -166,4 +126,27 @@ button {
 .close:focus {
   color: #ffffff;
   text-decoration: none;
+}
+
+.cell {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  background: #476675;
+  font-size: 36px;
+  text-align: center;
+  /* padding: 2em; */
+  line-height: 1.4;
+  color: white;
+  scroll-behavior: unset;
+  margin: 2px;
+  padding: 3px;
+  border-radius: 5px;
+}
+
+.board {
+  border-radius: 15px;
+  /* background-color: rgb(54, 70, 88); */
+  padding: .2em;
 }

@@ -13,7 +13,7 @@ export const getWidth = (boardSize: number, screenWidth: number) => {
 }
 function getWidthBoardSizeFour(screenWidth: number): number {
   if (screenWidth <= xxSmallScreen320) {
-    return 76
+    return 78
   }
   if (screenWidth <= xSmallScreen360) {
     return 88
@@ -40,7 +40,7 @@ function getWidthBoardSizeFour(screenWidth: number): number {
 }
 function getWidthBoardSizeSix(screenWidth: number): number {
   if (screenWidth <= xxSmallScreen320) {
-    return 50
+    return 52
   }
   if (screenWidth <= xSmallScreen360) {
     return 60
@@ -67,7 +67,7 @@ function getWidthBoardSizeSix(screenWidth: number): number {
 }
 function getWidthBoardSizeEight(actualScreenWidth: number) {
   if (actualScreenWidth <= xxSmallScreen320) {
-    return 38
+    return 38.5
   }
   if (actualScreenWidth <= xSmallScreen360) {
     return 43
@@ -100,6 +100,103 @@ const xxMediumScreen390 = 390
 const xMediumScreen414 = 414
 const mediumScreen428 = 428
 const largeScreen800 = 800
+
+const getFontBoardSizeFour = ({
+  digitLength,
+  actualScreenWidth,
+}: {
+  actualScreenWidth: number
+  digitLength: number
+}): number => {
+  if (actualScreenWidth <= xxSmallScreen320) {
+    if (digitLength < 3) return 20
+    return 18
+  }
+  if (actualScreenWidth <= xSmallScreen360) {
+    if (digitLength < 3) return 30
+    return 20
+  }
+  if (actualScreenWidth <= smallScreen375) {
+    if (digitLength < 3) return 35
+    return 22
+  }
+  if (actualScreenWidth <= xxxMediumScreen384) {
+    if (digitLength < 3) return 35
+    return 22
+  }
+
+  return 24
+}
+
+const getFontBoardSizeSix = ({
+  digitLength,
+  actualScreenWidth,
+}: {
+  actualScreenWidth: number
+  digitLength: number
+}): number => {
+  if (actualScreenWidth <= xxSmallScreen320) {
+    if (digitLength < 3) return 24
+    return 20
+  }
+  if (actualScreenWidth <= xSmallScreen360) {
+    if (digitLength < 3) return 24
+    return 20
+  }
+  if (actualScreenWidth <= smallScreen375) {
+    if (digitLength < 3) return 30
+    return 20
+  }
+  if (actualScreenWidth <= xxxMediumScreen384) {
+    if (digitLength < 3) return 35
+    return 22
+  }
+  return 24
+}
+const getFontBoardSizeEight = ({
+  digitLength,
+  actualScreenWidth,
+}: {
+  actualScreenWidth: number
+  digitLength: number
+}): number => {
+  if (actualScreenWidth <= xxSmallScreen320) {
+    if (digitLength < 3) return 24
+    return 20
+  }
+  if (actualScreenWidth <= xSmallScreen360) {
+    if (digitLength < 3) return 22
+    return 20
+  }
+  if (actualScreenWidth <= smallScreen375) {
+    if (digitLength < 3) return 25
+    return 22
+  }
+  if (actualScreenWidth <= xxxMediumScreen384) {
+    if (digitLength < 3) return 28
+    return 20
+  }
+  return 24
+}
+
 //!!Todo
-export function getFontSize(boardSize: number, actualScreenWidth: number) {}
-const getFontBoardSizeFour = () => {}
+export function getFontSize({
+  boardSize,
+  actualScreenWidth,
+  digitLength,
+}: {
+  boardSize: number
+  actualScreenWidth: number
+  digitLength: number
+}): string {
+  let size = 40
+  if (boardSize === 4)
+    size = getFontBoardSizeFour({ actualScreenWidth, digitLength })
+
+  if (boardSize === 6)
+    size = getFontBoardSizeSix({ digitLength, actualScreenWidth })
+  if (boardSize === 8) {
+    size = getFontBoardSizeEight({ digitLength, actualScreenWidth })
+  }
+  return `${size}px`
+}

@@ -1,4 +1,9 @@
-import { render, renderGameOver, renderNewGame, renderScore } from "./layout"
+import {
+  renderCells,
+  renderGameOver,
+  renderNewGame,
+  renderScore,
+} from "./layout"
 import {
   fillOneCell,
   isEqual,
@@ -76,13 +81,13 @@ const renderCellsPerKey =
     const movedCells = fn(cells)
     // if there is any legal move available
     if (isEqual(movedCells, cells)) {
-      render({ board, cells })
+      renderCells({ board, cells })
       return cells
     }
     cells = fillOneCell(movedCells)
     clearBoard(messageBoard)
     renderScore(messageBoard)
-    render({ board, cells })
+    renderCells({ board, cells })
     if (isGameOver(cells)) {
       renderGameOver(board)
       return cells
