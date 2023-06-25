@@ -5,13 +5,13 @@
 type func = (x: any) => any
 type RGBType = { red: number; green: number; blue: number }
 
-const chain = (x: unknown) => {
+export function chain<T>(x: T) {
   return {
     map: (f: func) => chain(f(x)),
     fold: (f: func) => f(x),
   }
 }
-const id = (x: any) => x
+export const id = (x: any) => x
 const log = (x: any) => {
   console.info(x)
   return x

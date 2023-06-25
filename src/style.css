@@ -112,7 +112,8 @@ button {
 }
 
 .close {
-  color: #ffffff;
+  color: #f80000b2;
+
   float: right;
   font-size: 28px;
   font-weight: bold;
@@ -121,10 +122,11 @@ button {
 
 .close:hover {
   opacity: 1;
+  color: #f80000;
 }
 
 .close:focus {
-  color: #ffffff;
+  color: #436d83;
   text-decoration: none;
 }
 
@@ -133,7 +135,7 @@ button {
   justify-content: center;
   align-content: center;
   align-items: center;
-  background: #476675;
+  background: #436d83;
   font-size: 36px;
   text-align: center;
   /* padding: 2em; */
