@@ -1,10 +1,10 @@
 import {
-  empty,
-  canMoveVertically,
   canMoveHorizontally,
+  canMoveVertically,
+  empty,
   hasSiblings,
   isGameOver,
-} from "../src/utils/state"
+} from "../src/utils"
 
 describe("hasSiblings", () => {
   //Check if the game is finished
@@ -43,7 +43,7 @@ describe("hasDuplicateRows", () => {
         [11, 32, 13, 4, 15],
         [51, 2, 3, 124, 25],
         [61, 23, 13, 4, 5],
-      ])
+      ]),
     ).toBe(true)
   })
   test("rows: Should return true xs[0][0] === xs[0][1] ==1", () => {
@@ -53,7 +53,7 @@ describe("hasDuplicateRows", () => {
         [11, 32, 13, 4, 15],
         [51, 2, 3, 124, 25],
         [61, 23, 13, 4, 5],
-      ])
+      ]),
     ).toBe(true)
   })
   test("rows: should return true end 5 = 5 ", () => {
@@ -63,7 +63,7 @@ describe("hasDuplicateRows", () => {
         [11, 32, 13, 4, 15],
         [51, 2, 3, 124, 25],
         [61, 23, 13, 5, 5],
-      ])
+      ]),
     ).toBe(true)
   })
   test("rows:should return true, zeros at the end don't  count", () => {
@@ -73,7 +73,7 @@ describe("hasDuplicateRows", () => {
         [11, 32, 13, 4, 15],
         [51, 2, 3, 124, 25],
         [61, 23, 13, 0, 0],
-      ])
+      ]),
     ).toBe(true)
   })
 })
@@ -85,7 +85,7 @@ describe("hasDuplicateColumns", () => {
         [11, 32, 13, 4, 15],
         [51, 2, 3, 124, 25],
         [61, 23, 13, 4, 5],
-      ])
+      ]),
     ).toBe(false)
   })
   test("columns: no duplicate", () => {
@@ -95,7 +95,7 @@ describe("hasDuplicateColumns", () => {
         [11, 32, 13, 4, 15],
         [51, 2, 3, 124, 25],
         [61, 23, 13, 4, 5],
-      ])
+      ]),
     ).toBe(false)
   })
   test("example", () => {
@@ -105,7 +105,7 @@ describe("hasDuplicateColumns", () => {
         [11, 32, 13, 4, 15],
         [51, 2, 3, 124, 25],
         [61, 23, 13, 4, 5],
-      ])
+      ]),
     ).toEqual(false)
   })
 })
@@ -117,7 +117,7 @@ describe("Game over", () => {
         [11, 32, 13, 4, 15],
         [51, 2, 3, 124, 25],
         [61, 23, 13, 4, 5],
-      ])
+      ]),
     ).toBe(true)
   })
   test("should return false, if  valid moves are available, horizontally", () => {
@@ -127,7 +127,7 @@ describe("Game over", () => {
         [12, 32, 13, 4, 15],
         [51, 2, 3, 124, 25],
         [61, 23, 13, 4, 5],
-      ])
+      ]),
     ).toBe(false)
   })
   test("should return false, if  valid moves are available, vertically", () => {
@@ -137,7 +137,7 @@ describe("Game over", () => {
         [11, 32, 13, 4, 15],
         [51, 2, 3, 124, 25],
         [61, 23, 13, 4, 5],
-      ])
+      ]),
     ).toBe(false)
   })
   test("should return false, if zeros", () => {
@@ -147,7 +147,7 @@ describe("Game over", () => {
         [11, 32, 13, 4, 15],
         [51, 2, 3, 124, 25],
         [61, 23, 13, 4, 5],
-      ])
+      ]),
     ).toBe(false)
   })
 })
@@ -160,7 +160,7 @@ describe("Empty", () => {
         [11, 32, 13, 4, 15],
         [51, 2, 3, 124, 25],
         [61, 23, 13, 4, 5],
-      ])
+      ]),
     ).toEqual([
       [0, 0, 0, 0],
       [0, 0, 0, 0],

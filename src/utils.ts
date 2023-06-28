@@ -1,5 +1,7 @@
-const iReverse = (xs: number[]) => xs.slice().reverse()
-const iArray = <T>(x: T[]) => Array.from(x)
+export const reverse = (xs: number[]) => xs.slice().reverse()
+export const reverse2d = (xs: number[][]) => xs.map(reverse)
+export const iArray = <T>(x: T[]) => Array.from(x)
+export const immutableArray = <T>(xs: T[][]) => xs.map((x) => Array.from(x))
 
 export const zeroLast = (xs: number[]) => {
   const len = xs.length
@@ -7,8 +9,10 @@ export const zeroLast = (xs: number[]) => {
   const zeros = Array.from(Array(len - noneZeros.length)).map(() => 0)
   return [...noneZeros, ...zeros]
 }
-
-export const doubleSame = (arr: number[]) => {
+declare global {
+  var globalScore: number
+}
+export const double = (arr: number[]) => {
   const xs = zeroLast([...Array.from(arr)])
   xs.reduce((x1, x2, i) => {
     if (x1 === x2) {
@@ -21,6 +25,7 @@ export const doubleSame = (arr: number[]) => {
   })
   return zeroLast(xs)
 }
+export const double2d = (xs: number[][]) => xs.map(double)
 export const transpose = (xs: number[][]) => {
   const arr = iArray(xs).map((x) => iArray(x))
   return arr[0].map((_, i) => arr.map((y) => y[i]))
@@ -78,30 +83,6 @@ export const isEqual = (xs: number[][], arr: number[][]): boolean => {
   return true
 }
 
-export const moveDown = (xs: number[][]): number[][] =>
-  transpose(
-    transpose(iArray(xs))
-      .map((x) => iReverse(x))
-      .map((x) => doubleSame(x))
-      .map((x) => iReverse(x))
-  )
-
-export const moveUp = (xs: number[][]): number[][] =>
-  transpose(
-    transpose(iArray(xs).map((x) => iArray(x))).map((x) => doubleSame(x))
-  )
-
-export const moveLeft = (xs: number[][]) =>
-  iArray(xs)
-    .map((x) => iArray(x))
-    .map((x) => doubleSame(x))
-
-export const moveRight = (xs: number[][]) =>
-  iArray(xs)
-    .map((x) => iArray(x))
-    .map((x) => iReverse(x))
-    .map((x) => doubleSame(x))
-    .map((x) => iReverse(x))
 /**
  * This method removes all children of the given element
  * @param parent Takes an HTMLElement
@@ -120,7 +101,7 @@ export function clearBoard(parent: HTMLElement) {
  */
 export const generate2DArray = (n: number) =>
   Array.from(Array(n).keys()).map(() =>
-    Array.from(Array(n).keys()).map(() => 0)
+    Array.from(Array(n).keys()).map(() => 0),
   )
 
 export const hasSiblings = (xs: number[]) =>
