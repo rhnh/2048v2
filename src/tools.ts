@@ -1,6 +1,6 @@
 export const id = <T>(x: T): T => x
 export const log = (x: unknown) => {
-  console.log(x, "hello")
+  console.log(x)
   return x
 }
 export const log2d = (xs: number[][]) => {
@@ -8,9 +8,7 @@ export const log2d = (xs: number[][]) => {
   console.log("")
   return xs
 }
-export const chain = <T>(x: T) => {
-  return {
-    map: (f: Function) => chain(f(x)),
-    fold: (f: Function) => f(x),
-  }
-}
+export const chain = <T>(x: T) => ({
+  map: (f: Function) => chain(f(x)),
+  fold: (f: Function) => f(x),
+})
