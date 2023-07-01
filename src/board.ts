@@ -1,22 +1,37 @@
 import { moveDown, moveLeft, moveRight, moveUp } from "./move"
+import { getWidth } from "./mq"
 import { clearBoard, fillOneCell, isEqual } from "./utils"
 
-export function drawCells(cells: number[][], board: HTMLElement) {
+export function drawCells(board: HTMLElement, cells: number[][]) {
   clearBoard(board)
   cells.map((x) => {
     x.map((cellValue: number) => {
       const cell = document.createElement("span")
-      cell.className = "cell"
-      cell.innerText = `${cellValue}`
+      cell.className += "filled"
+      cell.innerText = cellValue === 0 ? "" : `${cellValue}`
       if (cellValue === 0) {
-        cell.className = "zero"
+        cell.className += " zero"
       }
-
+      cell.className += " cells"
       board.appendChild(cell)
     })
   })
 }
-
+/**
+ *
+ * @param board
+ * @param boardSize
+ */
+export const boardStyle = (board: HTMLElement, boardSize: number) => {
+  board.style.display = "grid"
+  board.style.position = "relative"
+  const width = window.innerWidth > 0 ? window.innerWidth : screen.width
+  const size = getWidth(boardSize, width)
+  const gridStyle = size
+  board.style.gridTemplateColumns = gridStyle
+  board.style.gridTemplateRows = gridStyle
+  board.style.gap = "2px"
+}
 export function renderBoard({
   cells,
   board,
@@ -25,19 +40,13 @@ export function renderBoard({
   cells: number[][]
 }) {
   const draw = drawCellsOnMove({ cells, board })
+  boardStyle(board, cells.length)
   addEventListener("keydown", (e: KeyboardEvent) => {
-    if (e.key === "ArrowDown") {
-      draw(moveDown)
-    }
-    if (e.key === "ArrowUp") {
-      draw(moveUp)
-    }
-    if (e.key === "ArrowLeft") {
-      draw(moveLeft)
-    }
-    if (e.key === "ArrowRight") {
-      draw(moveRight)
-    }
+    if (["ArrowDown", "s", "j"].indexOf(e.key) !== -1) draw(moveDown)
+    if (["ArrowUp", "w", "k"].indexOf(e.key) !== -1) draw(moveUp)
+    if (["ArrowLeft", "a", "h"].indexOf(e.key) !== -1) draw(moveLeft)
+    if (["ArrowRight", "d", "l"].indexOf(e.key) !== -1) draw(moveRight)
+    if (e.key === "r") window.location.reload()
   })
   const touches = {
     x1: 0,
@@ -69,21 +78,13 @@ export function renderBoard({
     const y = touches.y2 - touches.y1
     const dy = Math.abs(y)
     const dx = Math.abs(x)
-    if (Math.max(dy, dx) > 10) {
+    if (Math.max(dy, dx) > 50) {
       direction = dx > dy ? (x > 0 ? "right" : "left") : y < 0 ? "up" : "down"
     }
-    if (direction === "down") {
-      draw(moveDown)
-    }
-    if (direction === "up") {
-      draw(moveUp)
-    }
-    if (direction === "left") {
-      draw(moveLeft)
-    }
-    if (direction === "right") {
-      draw(moveRight)
-    }
+    if (direction === "down") draw(moveDown)
+    if (direction === "up") draw(moveUp)
+    if (direction === "left") draw(moveLeft)
+    if (direction === "right") draw(moveRight)
   })
 }
 
@@ -92,9 +93,9 @@ export const drawCellsOnMove =
   (fn: (xs: number[][]) => number[][]) => {
     const movedCells = fn(cells)
     if (isEqual(movedCells, cells)) {
-      drawCells(cells, board)
+      drawCells(board, cells)
       return
     }
     cells = fillOneCell(movedCells)
-    drawCells(cells, board)
+    drawCells(board, cells)
   }

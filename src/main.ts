@@ -1,19 +1,25 @@
-import { moveDown, moveLeft, moveRight, moveUp } from "./move"
-import { drawCells, drawCellsOnMove, renderBoard } from "./render"
+import { renderControl } from "./controls"
+import { drawCells, renderBoard } from "./board"
+import { renderScore } from "./headers"
+
 import "./style.css"
-import {
-  fillCells,
-  fillOneCell,
-  generate2DArray,
-  isEqual,
-  print,
-} from "./utils"
+import { createElement } from "./tools"
+
+import { fillCells, generate2DArray } from "./utils"
 let cells = generate2DArray(4)
 cells = fillCells(cells, true)(2)
-
-const board = document.createElement("article")
-board.className = "board"
-
-drawCells(cells, board)
+const board = createElement("article")("board")
 renderBoard({ cells, board })
-document.body.appendChild(board)
+drawCells(board, cells)
+
+const score = renderScore("score", "222048")
+const best = renderScore("best", "2220348")
+const containerScoreBoard = createElement("article")("container__scoreboard")
+containerScoreBoard.append(score, best)
+
+const title = createElement("h1")("title")
+title.innerText = "Game: 2048"
+
+const control = renderControl(board)
+
+document.body.append(title, containerScoreBoard, board, control)

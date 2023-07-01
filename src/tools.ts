@@ -12,3 +12,11 @@ export const chain = <T>(x: T) => ({
   map: (f: Function) => chain(f(x)),
   fold: (f: Function) => f(x),
 })
+
+export const createElement =
+  (tag: keyof HTMLElementTagNameMap) =>
+  (className: string): HTMLElement => {
+    const element = document.createElement(tag)
+    element.className = className
+    return element
+  }
