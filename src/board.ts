@@ -1,8 +1,9 @@
-import { moveDown, moveLeft, moveRight, moveUp } from "./move"
+import { renderScore } from "./headers"
+import { keyPressedMovements, mobileTouchOption } from "./keyboard"
 import { getWidth } from "./mq"
 import { clearBoard, fillOneCell, isEqual } from "./utils"
 
-export function drawCells(board: HTMLElement, cells: number[][]) {
+export function renderCells(board: HTMLElement, cells: number[][]) {
   clearBoard(board)
   cells.map((x) => {
     x.map((cellValue: number) => {
@@ -12,11 +13,13 @@ export function drawCells(board: HTMLElement, cells: number[][]) {
       if (cellValue === 0) {
         cell.className += " zero"
       }
+
       cell.className += " cells"
       board.appendChild(cell)
     })
   })
 }
+//#########################################################
 /**
  *
  * @param board
@@ -32,6 +35,9 @@ export const boardStyle = (board: HTMLElement, boardSize: number) => {
   board.style.gridTemplateRows = gridStyle
   board.style.gap = "2px"
 }
+
+//#########################################################
+
 export function renderBoard({
   cells,
   board,
@@ -41,61 +47,23 @@ export function renderBoard({
 }) {
   const draw = drawCellsOnMove({ cells, board })
   boardStyle(board, cells.length)
-  addEventListener("keydown", (e: KeyboardEvent) => {
-    if (["ArrowDown", "s", "j"].indexOf(e.key) !== -1) draw(moveDown)
-    if (["ArrowUp", "w", "k"].indexOf(e.key) !== -1) draw(moveUp)
-    if (["ArrowLeft", "a", "h"].indexOf(e.key) !== -1) draw(moveLeft)
-    if (["ArrowRight", "d", "l"].indexOf(e.key) !== -1) draw(moveRight)
-    if (e.key === "r") window.location.reload()
-  })
-  const touches = {
-    x1: 0,
-    y1: 0,
-    x2: 0,
-    y2: 0,
-  }
-  let direction: "up" | "down" | "right" | "left" | "none"
-  board.addEventListener(
-    "touchstart",
-    (e) => {
-      e.preventDefault()
-      touches.x1 = e.touches[0].clientX
-      touches.y1 = e.touches[0].clientY
-    },
-    { passive: false },
-  )
-  board.addEventListener(
-    "touchmove",
-    (e) => {
-      e.preventDefault()
-      touches.x2 = e.changedTouches[0].clientX
-      touches.y2 = e.changedTouches[0].clientY
-    },
-    { passive: false },
-  )
-  board.addEventListener("touchend", () => {
-    const x = touches.x2 - touches.x1
-    const y = touches.y2 - touches.y1
-    const dy = Math.abs(y)
-    const dx = Math.abs(x)
-    if (Math.max(dy, dx) > 50) {
-      direction = dx > dy ? (x > 0 ? "right" : "left") : y < 0 ? "up" : "down"
-    }
-    if (direction === "down") draw(moveDown)
-    if (direction === "up") draw(moveUp)
-    if (direction === "left") draw(moveLeft)
-    if (direction === "right") draw(moveRight)
-  })
+  keyPressedMovements(draw)
+  mobileTouchOption(board, draw)
 }
+//#########################################################
 
 export const drawCellsOnMove =
   ({ cells, board }: { board: HTMLElement; cells: number[][] }) =>
   (fn: (xs: number[][]) => number[][]) => {
     const movedCells = fn(cells)
     if (isEqual(movedCells, cells)) {
-      drawCells(board, cells)
+      renderCells(board, cells)
       return
     }
     cells = fillOneCell(movedCells)
-    drawCells(board, cells)
+    renderCells(board, cells)
+    const score = document.querySelector(
+      ".scoreboard__score",
+    ) as unknown as HTMLSpanElement
+    if (score) score.innerText = `${globalScore}`
   }
