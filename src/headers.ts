@@ -12,8 +12,8 @@ export const renderHeaders = (titleLabel: string): HTMLElement => {
 export const renderScore = (label: string, score: string) => {
   const section = createElement("section")("scoreboard")
   const p = createElement("h4")(`scoreboard__label`)
-  p.innerText = label
-  const scoreTag = createElement("span")(`scoreboard__score`)
+  p.innerText = label.toUpperCase()
+  const scoreTag = createElement("span")(`scoreboard__${label}`)
   scoreTag.innerText += score
   section.append(p, scoreTag)
   return section

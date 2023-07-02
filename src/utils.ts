@@ -21,7 +21,6 @@ export const double = (arr: number[]) => {
       xs[i - 1] = 2 * x1
       xs[i] = 0
       globalThis.globalScore += x1 + x1
-      console.log(x1, x2)
       return 2 * x1
     }
     return x2

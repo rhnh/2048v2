@@ -30,10 +30,11 @@ body {
   margin: 0;
 }
 
-.scoreboard__score {
+.scoreboard__score,
+.scoreboard__best {
   font-family: "scoreboard";
-  font-size: 26px;
-  color: #ec4604;
+  font-size: 40px;
+  color: red;
 
 }
 

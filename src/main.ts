@@ -13,7 +13,9 @@ const scoreboard = createElement("article")("container__scoreboard")
 renderBoard({ cells, board })
 renderCells(board, cells)
 const score = renderScore("score", `${globalThis.globalScore ?? 0}`)
-const best = renderScore("best", "2220348")
+const bestScore =
+  (window.localStorage.getItem("best-score") as unknown as string) ?? "0"
+const best = renderScore("best", bestScore)
 scoreboard.append(score, best)
 
 const title = createElement("h1")("title")

@@ -1,4 +1,3 @@
-import { renderScore } from "./headers"
 import { keyPressedMovements, mobileTouchOption } from "./keyboard"
 import { getWidth } from "./mq"
 import { clearBoard, fillOneCell, isEqual, isGameOver } from "./utils"
@@ -55,8 +54,19 @@ export function renderBoard({
 export const drawCellsOnMove =
   ({ cells, board }: { board: HTMLElement; cells: number[][] }) =>
   (fn: (xs: number[][]) => number[][]) => {
+    const score = document.querySelector(
+      ".scoreboard__score",
+    ) as unknown as HTMLSpanElement
     if (isGameOver(cells)) {
       renderGameOver(board)
+      const best = document.querySelector(
+        ".scoreboard__best",
+      ) as unknown as HTMLSpanElement
+      const bestScore = best.innerText as unknown as number
+      const currentScore = score.innerText as unknown as number
+      if (currentScore > bestScore) {
+        window.localStorage.setItem("best-score", `${currentScore}`)
+      }
       return
     }
     const movedCells = fn(cells)
@@ -66,9 +76,7 @@ export const drawCellsOnMove =
     }
     cells = fillOneCell(movedCells)
     renderCells(board, cells)
-    const score = document.querySelector(
-      ".scoreboard__score",
-    ) as unknown as HTMLSpanElement
+
     if (score) score.innerText = `${globalScore}`
   }
 

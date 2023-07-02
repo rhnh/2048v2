@@ -1,11 +1,11 @@
 export const id = <T>(x: T): T => x
 export const log = (x: unknown) => {
-  console.log(x)
+  console.info(x)
   return x
 }
 export const log2d = (xs: number[][]) => {
-  xs.map((x) => console.log(x))
-  console.log("")
+  xs.map((x) => console.info(x))
+  console.info("")
   return xs
 }
 export const chain = <T>(x: T) => ({

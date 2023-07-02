@@ -5,7 +5,6 @@ const matchedKey = (keys: string[], pressedKey: string): boolean =>
   keys.indexOf(pressedKey) !== -1
 
 export const keyPressedMovements = (draw: Function) => {
-  console.log(globalThis.globalScore)
   addEventListener("keydown", (e: KeyboardEvent) => {
     if (matchedKey(["ArrowDown", "s", "j"], e.key)) draw(moveDown)
     if (matchedKey(["ArrowUp", "w", "k"], e.key)) draw(moveUp)
