@@ -1,7 +1,7 @@
 import { renderScore } from "./headers"
 import { keyPressedMovements, mobileTouchOption } from "./keyboard"
 import { getWidth } from "./mq"
-import { clearBoard, fillOneCell, isEqual } from "./utils"
+import { clearBoard, fillOneCell, isEqual, isGameOver } from "./utils"
 
 export function renderCells(board: HTMLElement, cells: number[][]) {
   clearBoard(board)
@@ -55,6 +55,10 @@ export function renderBoard({
 export const drawCellsOnMove =
   ({ cells, board }: { board: HTMLElement; cells: number[][] }) =>
   (fn: (xs: number[][]) => number[][]) => {
+    if (isGameOver(cells)) {
+      renderGameOver(board)
+      return
+    }
     const movedCells = fn(cells)
     if (isEqual(movedCells, cells)) {
       renderCells(board, cells)
@@ -67,3 +71,17 @@ export const drawCellsOnMove =
     ) as unknown as HTMLSpanElement
     if (score) score.innerText = `${globalScore}`
   }
+
+export function renderGameOver(board: HTMLElement) {
+  const message = document.createElement("section")
+  message.className = "game-over"
+  clearBoard(board)
+  board.appendChild(message)
+  const retry = document.createElement("button")
+
+  retry.innerText = "Try again"
+  retry.onclick = () => {
+    window.location.reload()
+  }
+  message.appendChild(retry)
+}
