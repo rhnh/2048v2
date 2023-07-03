@@ -1,5 +1,6 @@
+import { controlBar } from "./controls"
 import { keyPressedMovements, mobileTouchOption } from "./keyboard"
-import { getWidth } from "./mq"
+import { getCellFontSize, getCellWidth } from "./mq"
 import { clearBoard, fillOneCell, isEqual, isGameOver } from "./utils"
 
 export function renderCells(board: HTMLElement, cells: number[][]) {
@@ -7,12 +8,18 @@ export function renderCells(board: HTMLElement, cells: number[][]) {
   cells.map((x) => {
     x.map((cellValue: number) => {
       const cell = document.createElement("span")
+      const screenWidth =
+        window.innerWidth > 0 ? window.innerWidth : screen.width
       cell.className += "filled"
       cell.innerText = cellValue === 0 ? "" : `${cellValue}`
       if (cellValue === 0) {
         cell.className += " zero"
       }
-
+      cell.style.fontSize = getCellFontSize({
+        boardSize: cells.length,
+        actualScreenWidth: screenWidth,
+        digitLength: String(cellValue).length,
+      })
       cell.className += " cells"
       board.appendChild(cell)
     })
@@ -27,17 +34,18 @@ export function renderCells(board: HTMLElement, cells: number[][]) {
 export const boardStyle = (board: HTMLElement, boardSize: number) => {
   board.style.display = "grid"
   board.style.position = "relative"
-  const width = window.innerWidth > 0 ? window.innerWidth : screen.width
-  const size = getWidth(boardSize, width)
-  const gridStyle = size
-  board.style.gridTemplateColumns = gridStyle
-  board.style.gridTemplateRows = gridStyle
+  const screenWidth = window.innerWidth > 0 ? window.innerWidth : screen.width
+  const width = getCellWidth(boardSize, screenWidth)
+  const boardWidth = `${width}px `.repeat(boardSize)
+  board.style.gridTemplateColumns = boardWidth
+  board.style.gridTemplateRows = boardWidth
+
   board.style.gap = "2px"
 }
 
 //#########################################################
 
-export function renderBoard({
+export function initialRenderBoard({
   cells,
   board,
 }: {
@@ -45,6 +53,7 @@ export function renderBoard({
   cells: number[][]
 }) {
   const draw = drawCellsOnMove({ cells, board })
+  globalThis.globalCells = cells
   boardStyle(board, cells.length)
   keyPressedMovements(draw)
   mobileTouchOption(board, draw)
@@ -76,7 +85,7 @@ export const drawCellsOnMove =
     }
     cells = fillOneCell(movedCells)
     renderCells(board, cells)
-
+    globalThis.globalCells = cells
     if (score) score.innerText = `${globalScore}`
   }
 

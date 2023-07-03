@@ -11,6 +11,7 @@ export const zeroLast = (xs: number[]) => {
 }
 declare global {
   var globalScore: number
+  var globalCells: number[][]
 }
 globalThis.globalScore = 0
 

@@ -1,27 +1,17 @@
-import { gridSizeOption, renderControl } from "./controls"
-import { renderCells, renderBoard } from "./board"
-import { renderScore } from "./headers"
-
-import "./style.css"
+import { renderCells, initialRenderBoard } from "./board"
 import { createElement } from "./tools"
-
 import { fillCells, generate2DArray } from "./utils"
+import { renderHeaders } from "./headers"
+import "./style/index.css"
+import { controlBar } from "./controls"
 let cells = generate2DArray(4)
 cells = fillCells(cells, true)(2)
+
 const board = createElement("article")("board")
-const scoreboard = createElement("article")("container__scoreboard")
-renderBoard({ cells, board })
+initialRenderBoard({ cells, board })
 renderCells(board, cells)
-const score = renderScore("score", `${globalThis.globalScore ?? 0}`)
-const bestScore =
-  (window.localStorage.getItem("best-score") as unknown as string) ?? "0"
-const best = renderScore("best", bestScore)
-scoreboard.append(score, best)
-
-const title = createElement("h1")("title")
-title.innerText = "Game: 2048"
-
-const control = renderControl(board)
-board.appendChild(gridSizeOption(board))
-
-document.body.append(title, scoreboard, board, control)
+document.body.append(
+  renderHeaders("2048", cells.length),
+  board,
+  controlBar(board),
+)

@@ -1,4 +1,7 @@
-export const getWidth = (boardSize: number, screenWidth: number) => {
+export const getCellWidth = (
+  boardSize: number,
+  screenWidth: number,
+): number => {
   let size: number = 150
   if (boardSize === 4) {
     size = getWidthBoardSizeFour(screenWidth)
@@ -9,7 +12,7 @@ export const getWidth = (boardSize: number, screenWidth: number) => {
   if (boardSize === 8) {
     size = getWidthBoardSizeEight(screenWidth)
   }
-  return `${size}px `.repeat(boardSize)
+  return size
 }
 function getWidthBoardSizeFour(screenWidth: number): number {
   if (screenWidth <= xxSmallScreen320) {
@@ -125,7 +128,7 @@ const getFontBoardSizeFour = ({
     return 22
   }
 
-  return 24
+  return 40
 }
 
 const getFontBoardSizeSix = ({
@@ -180,7 +183,7 @@ const getFontBoardSizeEight = ({
 }
 
 //!!Todo
-export function getFontSize({
+export function getCellFontSize({
   boardSize,
   actualScreenWidth,
   digitLength,
@@ -192,7 +195,6 @@ export function getFontSize({
   let size = 40
   if (boardSize === 4)
     size = getFontBoardSizeFour({ actualScreenWidth, digitLength })
-
   if (boardSize === 6)
     size = getFontBoardSizeSix({ digitLength, actualScreenWidth })
   if (boardSize === 8) {

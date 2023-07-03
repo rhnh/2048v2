@@ -6,10 +6,23 @@ const matchedKey = (keys: string[], pressedKey: string): boolean =>
 
 export const keyPressedMovements = (draw: Function) => {
   addEventListener("keydown", (e: KeyboardEvent) => {
-    if (matchedKey(["ArrowDown", "s", "j"], e.key)) draw(moveDown)
-    if (matchedKey(["ArrowUp", "w", "k"], e.key)) draw(moveUp)
-    if (matchedKey(["ArrowLeft", "a", "h"], e.key)) draw(moveLeft)
-    if (matchedKey(["ArrowRight", "d", "l"], e.key)) draw(moveRight)
+    // e.preventDefault()
+    if (matchedKey(["ArrowDown", "s", "j"], e.key)) {
+      e.preventDefault()
+      draw(moveDown)
+    }
+    if (matchedKey(["ArrowUp", "w", "k"], e.key)) {
+      e.preventDefault()
+      draw(moveUp)
+    }
+    if (matchedKey(["ArrowLeft", "a", "h"], e.key)) {
+      e.preventDefault()
+      draw(moveLeft)
+    }
+    if (matchedKey(["ArrowRight", "d", "l"], e.key)) {
+      e.preventDefault()
+      draw(moveRight)
+    }
     if (e.key === "r") window.location.reload()
   })
 }
@@ -39,7 +52,8 @@ export const mobileTouchOption = (board: HTMLElement, draw: Function) => {
     },
     { passive: false },
   )
-  board.addEventListener("touchend", () => {
+  board.addEventListener("touchend", (e) => {
+    e.preventDefault()
     const x = touches.x2 - touches.x1
     const y = touches.y2 - touches.y1
     const dy = Math.abs(y)
