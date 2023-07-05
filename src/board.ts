@@ -1,4 +1,4 @@
-import { controlBar } from "./controls"
+import { startSelector } from "./controls"
 import { keyPressedMovements, mobileTouchOption } from "./keyboard"
 import { getCellFontSize, getCellWidth } from "./mq"
 import { clearBoard, fillOneCell, isEqual, isGameOver } from "./utils"
@@ -24,6 +24,7 @@ export function renderCells(board: HTMLElement, cells: number[][]) {
       board.appendChild(cell)
     })
   })
+  boardStyle(board, cells.length)
 }
 //#########################################################
 /**
@@ -31,10 +32,10 @@ export function renderCells(board: HTMLElement, cells: number[][]) {
  * @param board
  * @param boardSize
  */
-export const boardStyle = (board: HTMLElement, boardSize: number) => {
+const boardStyle = (board: HTMLElement, boardSize: number) => {
   board.style.display = "grid"
   board.style.position = "relative"
-  const screenWidth = window.innerWidth > 0 ? window.innerWidth : screen.width
+  const screenWidth = getScreenWidth()
   const width = getCellWidth(boardSize, screenWidth)
   const boardWidth = `${width}px `.repeat(boardSize)
   board.style.gridTemplateColumns = boardWidth
@@ -42,23 +43,52 @@ export const boardStyle = (board: HTMLElement, boardSize: number) => {
 
   board.style.gap = "2px"
 }
+const getScreenWidth = () =>
+  window.innerWidth > 0 ? window.innerWidth : screen.width
 
 //#########################################################
-
-export function initialRenderBoard({
+export type Status = "playing" | "idle" | "finished"
+export function initialBoard({
   cells,
   board,
+  state,
 }: {
   board: HTMLElement
   cells: number[][]
+  state: Status
 }) {
   const draw = drawCellsOnMove({ cells, board })
-  globalThis.globalCells = cells
+  renderCells(board, cells)
+  if (state === "idle") {
+    startSelector(board, cells)
+    return
+  }
+  if (state === "finished") {
+    return renderGameOver(board)
+  }
   boardStyle(board, cells.length)
   keyPressedMovements(draw)
   mobileTouchOption(board, draw)
 }
 //#########################################################
+export function check(
+  board: HTMLElement,
+  cells: number[][],
+  score: HTMLElement,
+) {
+  if (isGameOver(cells)) {
+    renderGameOver(board)
+    const best = document.querySelector(
+      ".scoreboard__best",
+    ) as unknown as HTMLSpanElement
+    const bestScore = best.innerText as unknown as number
+    const currentScore = score.innerText as unknown as number
+    if (currentScore > bestScore) {
+      window.localStorage.setItem("best-score", `${currentScore}`)
+    }
+    return
+  }
+}
 
 export const drawCellsOnMove =
   ({ cells, board }: { board: HTMLElement; cells: number[][] }) =>
@@ -66,18 +96,8 @@ export const drawCellsOnMove =
     const score = document.querySelector(
       ".scoreboard__score",
     ) as unknown as HTMLSpanElement
-    if (isGameOver(cells)) {
-      renderGameOver(board)
-      const best = document.querySelector(
-        ".scoreboard__best",
-      ) as unknown as HTMLSpanElement
-      const bestScore = best.innerText as unknown as number
-      const currentScore = score.innerText as unknown as number
-      if (currentScore > bestScore) {
-        window.localStorage.setItem("best-score", `${currentScore}`)
-      }
-      return
-    }
+
+    globalThis.globalCells = cells
     const movedCells = fn(cells)
     if (isEqual(movedCells, cells)) {
       renderCells(board, cells)
@@ -85,7 +105,7 @@ export const drawCellsOnMove =
     }
     cells = fillOneCell(movedCells)
     renderCells(board, cells)
-    globalThis.globalCells = cells
+    check(board, cells, score)
     if (score) score.innerText = `${globalScore}`
   }
 

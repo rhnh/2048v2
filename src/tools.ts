@@ -20,3 +20,6 @@ export const createElement =
     element.className = className
     return element
   }
+
+export const getScreenWidth = () =>
+  window.innerWidth > 0 ? window.innerWidth : screen.width
