@@ -7,17 +7,21 @@ export const Modal =
     board,
     cells,
     state,
+    visibility,
   }: {
     board: HTMLElement
     cells: number[][]
     state: Status
+    visibility: "hidden" | "visible"
   }) =>
   (elements: HTMLElement[]): HTMLElement => {
     clearBoard(board)
     const modal = createElement("article")("modal")
     modal.style.position = "absolute"
     modal.style.width = "100%"
+    modal.style.visibility = visibility
     board.appendChild(modal)
+
     const closeButton = createElement("button")("modal__close")
     closeButton.innerText = "x"
     modal.appendChild(closeButton)

@@ -20,7 +20,7 @@ body {
 }
 
 .title {
-  color: #1d3557
+  color: #1561cc
 }
 
 .scores {
@@ -66,4 +66,28 @@ body {
 
 .zero {
   background-color: #778da9;
+}
+
+.modal__close {
+  position: absolute;
+  right: 5px;
+  margin-left: .2em;
+  border: none;
+  font-size: 30px;
+  color: rgb(202, 147, 147);
+  background-color: transparent;
+  color: red;
+  cursor: pointer;
+}
+
+.modal__close:hover {
+  opacity: .5;
+}
+
+.color__input ::after {
+  height: 30px;
+  width: 30px;
+  content: "asdfadsf";
+  display: inline-block;
+  background-color: red
 }

@@ -1,4 +1,5 @@
 import { Status, initialBoard } from "./board"
+import { getColorShade } from "./colors"
 import { Modal } from "./modal"
 
 import { chain, createElement, id } from "./tools"
@@ -85,33 +86,22 @@ const displayColorSelectors = (
   state: Status,
 ) =>
   createButtonWithAction("Colors", "restart-button", () => {
-    Modal({ board, cells: globalThis.globalCells ?? cells, state })([
-      createButtonWithAction("hoho", "sds"),
-    ])
+    Modal({
+      board,
+      cells: globalThis.globalCells ?? cells,
+      state,
+      visibility: "visible",
+    })([colorBox("#f6b73c")])
   })
 
-const rules = createElement("p")("rules")
-
-rules.innerHTML = `<strong>Press Keys</strong> <br/><br/> 
-  1. Arrow keys <br/>
-  2. vim keys <br/> 
-  3. a,w,s,d to move Left, up, down and right
-  <br/>
-  <br/>
-  <strong>Rules</strong>
-  <br/>
-  If you reach 2048 in 4x4,
-  <br/> 3072 in 6x6,
-  <br/> 4096 in 8x8.
-  <br/> You will win! <br/>
-  <br/>
-  <strong>
-  Good luck
-  </strong>
-`
 const displayRules = (board: HTMLElement, cells: number[][], state: Status) =>
   createButtonWithAction("Rules", "restart-button", () => {
-    Modal({ board, cells: globalThis.globalCells ?? cells, state })([rules])
+    Modal({
+      board,
+      cells: globalThis.globalCells ?? cells,
+      state,
+      visibility: "visible",
+    })([rulesParagraph])
   })
 
 export const wrapper = (elements: HTMLElement[], className: string) =>
@@ -131,3 +121,40 @@ export const buttonBar = (board: HTMLElement, cells: number[][]) =>
     ],
     "start-bar",
   )
+
+const colorBox = (color: string): HTMLElement => {
+  const article = createElement("article")("colors")
+  const colorInput = createElement("input")("color__input")
+  colorInput.setAttribute("type", "color")
+  colorInput.setAttribute("value", color)
+  const colorInput2 = createElement("input")("color__input")
+  colorInput2.setAttribute("type", "color")
+  const shadedColor = getColorShade(color, 1, 0.1)
+  console.log(shadedColor)
+  colorInput2.setAttribute("value", shadedColor)
+  article.appendChild(colorInput)
+  article.appendChild(colorInput2)
+  return article
+}
+
+const rulesParagraph = createElement("p")("rules")
+rulesParagraph.style.padding = "0"
+rulesParagraph.style.margin = "0"
+rulesParagraph.style.paddingLeft = "1em"
+rulesParagraph.innerHTML = `<strong>Press Keys</strong>    <br/><br/>
+  Use Arrow keys, Vim keys or gaming keys  <br/>
+   &ensp;Left: "Arrow Left" or "a" or "j" <br/>
+   &ensp;Right: "Arrow Right" "d" or "l"<br/>
+   &ensp;Down: "Arrow Down" or "s" or "k"<br/>
+   &ensp;up: "Arrow up" or "w" or "k"  <br/>
+   <br/>
+  <strong>Rules</strong>
+  <br/>
+  If you reach 2048 in 4x4,
+  <br/> 3072 in 6x6,
+  <br/> 4096 in 8x8.
+  <br/> You will win! &emsp;
+  <strong>
+  Good luck
+  </strong>
+`
