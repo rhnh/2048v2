@@ -1,13 +1,13 @@
-import { initialBoard } from "./board"
+import { renderBoard } from "./board"
 import { createElement } from "./tools"
 import { fillCells, generate2DArray } from "./utils"
 import { renderHeaders } from "./headers"
 import "./style/index.css"
-import { buttonBar, startSelector } from "./controls"
+import { buttonBar, startSelector } from "./layout"
 let cells = generate2DArray(4)
 cells = fillCells(cells, true)(2)
 const board = createElement("article")("board")
-initialBoard({ cells, board, state: "idle" })
+renderBoard({ cells, board, state: "idle" })
 startSelector(board, cells)
 document.body.append(
   renderHeaders("2048", cells.length),

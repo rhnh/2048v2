@@ -1,4 +1,4 @@
-import { Status, initialBoard } from "./board"
+import { Cell, Status, renderBoard } from "./board"
 import { getColorShade } from "./colors"
 import { Modal } from "./modal"
 
@@ -29,7 +29,7 @@ export const selectBoardSize =
       cells = generate2DArray(boardSize)
       cells = fillCells(cells, true)(boardSize / 2)
       clearBoard(board)
-      initialBoard({ board, cells, state: "playing" })
+      renderBoard({ board, cells, state: "playing" })
     })
 
 export const boardSize4x4 = (board: HTMLElement, cells: number[][]) =>
@@ -85,13 +85,21 @@ const displayColorSelectors = (
   cells: number[][],
   state: Status,
 ) =>
-  createButtonWithAction("Colors", "restart-button", () => {
+  createButtonWithAction("Customize", "restart-button", () => {
     Modal({
       board,
       cells: globalThis.globalCells ?? cells,
       state,
       visibility: "visible",
-    })([colorBox("#f6b73c")])
+    })([
+      colorBox(6, "three"),
+      colorBox(3, "two"),
+      colorBox(1, "one"),
+      colorBox(9, "three"),
+      colorBox(12, "three"),
+      colorBox(15, "three"),
+      colorBox(18, "three"),
+    ])
   })
 
 const displayRules = (board: HTMLElement, cells: number[][], state: Status) =>
@@ -122,18 +130,38 @@ export const buttonBar = (board: HTMLElement, cells: number[][]) =>
     "start-bar",
   )
 
-const colorBox = (color: string): HTMLElement => {
+export const generateColor = (
+  hex: string,
+  cellIndex: number,
+  numberOfShades: number,
+) => {
+  let i = 0
+  const shades: Cell[] = []
+  if (cellIndex === 0) cellIndex = 1
+  while (i < numberOfShades) {
+    const shade: Cell = {
+      cellValue: Math.pow(2, i + cellIndex),
+      color: getColorShade(hex, i),
+      backgroundColor: getColorShade(hex, i),
+    }
+
+    shades.push(shade)
+    i++
+  }
+  return shades
+}
+const colorBox = (i: number, className: string): HTMLElement => {
   const article = createElement("article")("colors")
-  const colorInput = createElement("input")("color__input")
+  const colorInput = createElement("input")(`color__input--${className}`)
   colorInput.setAttribute("type", "color")
-  colorInput.setAttribute("value", color)
-  const colorInput2 = createElement("input")("color__input")
-  colorInput2.setAttribute("type", "color")
-  const shadedColor = getColorShade(color, 1, 0.1)
-  console.log(shadedColor)
-  colorInput2.setAttribute("value", shadedColor)
+  colorInput.onchange = (e: Event) => {
+    const target = e.target as HTMLInputElement
+    const { value } = target
+    globalThis.globalColors = globalThis.globalColors.concat(
+      generateColor(`${value}`, i, 6),
+    )
+  }
   article.appendChild(colorInput)
-  article.appendChild(colorInput2)
   return article
 }
 
@@ -141,8 +169,9 @@ const rulesParagraph = createElement("p")("rules")
 rulesParagraph.style.padding = "0"
 rulesParagraph.style.margin = "0"
 rulesParagraph.style.paddingLeft = "1em"
+rulesParagraph.style.marginTop = "1em"
 rulesParagraph.innerHTML = `<strong>Press Keys</strong>    <br/><br/>
-  Use Arrow keys, Vim keys or gaming keys  <br/>
+  Use Arrow keys, Vim keys or gaming keys  <br/><br/>
    &ensp;Left: "Arrow Left" or "a" or "j" <br/>
    &ensp;Right: "Arrow Right" "d" or "l"<br/>
    &ensp;Down: "Arrow Down" or "s" or "k"<br/>

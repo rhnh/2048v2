@@ -1,4 +1,4 @@
-import { Status, initialBoard } from "./board"
+import { Status, renderBoard } from "./board"
 import { createElement } from "./tools"
 import { clearBoard } from "./utils"
 
@@ -25,10 +25,9 @@ export const Modal =
     const closeButton = createElement("button")("modal__close")
     closeButton.innerText = "x"
     modal.appendChild(closeButton)
-    console.log(state, "state")
     closeButton.onclick = () => {
       clearBoard(board)
-      initialBoard({ cells, board, state })
+      renderBoard({ cells, board, state })
     }
     modal.append(...elements)
     return board

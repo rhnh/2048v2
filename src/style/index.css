@@ -91,3 +91,9 @@ body {
   display: inline-block;
   background-color: red
 }
+
+.start-bar {
+  display: flex;
+  gap: 1em;
+
+}

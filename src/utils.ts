@@ -1,3 +1,5 @@
+import { Cell } from "./board"
+
 export const reverse = (xs: number[]) => xs.slice().reverse()
 export const reverse2d = (xs: number[][]) => xs.map(reverse)
 export const iArray = <T>(x: T[]) => Array.from(x)
@@ -9,11 +11,14 @@ export const zeroLast = (xs: number[]) => {
   const zeros = Array.from(Array(len - noneZeros.length)).map(() => 0)
   return [...noneZeros, ...zeros]
 }
+
 declare global {
   var globalScore: number
   var globalCells: number[][]
+  var globalColors: Partial<Cell>[]
 }
 globalThis.globalScore = 0
+globalThis.globalColors = []
 
 export const double = (arr: number[]) => {
   const xs = zeroLast([...Array.from(arr)])
