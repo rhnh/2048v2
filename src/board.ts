@@ -1,4 +1,4 @@
-import { startSelector } from "./layout"
+import { startSelector } from "./components"
 import { keyPressedMovements, mobileTouchOption } from "./keyboard"
 import { getCellFontSize, getCellWidth } from "./mq"
 import { chain, createElement, id } from "./tools"

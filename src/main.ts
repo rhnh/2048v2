@@ -3,7 +3,7 @@ import { createElement } from "./tools"
 import { fillCells, generate2DArray } from "./utils"
 import { renderHeaders } from "./headers"
 import "./style/index.css"
-import { buttonBar, startSelector } from "./layout"
+import { buttonBar, startSelector } from "./components"
 let cells = generate2DArray(4)
 cells = fillCells(cells, true)(2)
 const board = createElement("article")("board")
