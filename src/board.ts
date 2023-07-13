@@ -1,4 +1,5 @@
-import { startSelector } from "./components"
+import { getExponent } from "./colors"
+import { selectorBoard } from "./components"
 import { keyPressedMovements, mobileTouchOption } from "./keyboard"
 import { getCellFontSize, getCellWidth } from "./mq"
 import { chain, createElement, id } from "./tools"
@@ -9,11 +10,7 @@ export interface Cell {
   color: string
 }
 
-export const createCell = (
-  cellValue: number,
-  columnsWidth: number,
-  customize?: Cell,
-) =>
+export const createCell = (cellValue: number, columnsWidth: number) =>
   chain(createElement("span")("cell"))
     .map((cell: HTMLSpanElement) => {
       cell.innerText = cellValue === 0 ? "" : `${cellValue}`
@@ -30,28 +27,26 @@ export const createCell = (
       return cell
     })
     .map((cell: HTMLSpanElement) => {
-      if (globalThis && globalThis.globalColors.length > 0) {
-        const gCells = globalColors
-        gCells.map((c) => {
-          if (`${c.cellValue}` === cell.innerText) {
-            cell.style.backgroundColor = c.backgroundColor ?? ""
-          }
-        })
-      }
+      globalThis.bgColors.map((c, i) => {
+        if (i === getExponent(cellValue)) {
+          cell.style.backgroundColor = c
+        }
+      })
+      globalThis.fontColors.map((c, i) => {
+        if (i === getExponent(cellValue)) {
+          cell.style.color = c
+        }
+      })
       cell.className += " cells"
       return cell
     })
     .fold(id)
 
-export function renderCells(
-  board: HTMLElement,
-  cells: number[][],
-  customize?: Cell,
-) {
+export function renderCells(board: HTMLElement, cells: number[][]) {
   clearBoard(board)
   cells.map((x) => {
     x.map((cellValue: number) => {
-      board.appendChild(createCell(cellValue, cells.length, customize))
+      board.appendChild(createCell(cellValue, cells.length))
     })
   })
   boardStyle(board, cells.length)
@@ -71,7 +66,7 @@ const boardStyle = (board: HTMLElement, boardSize: number) => {
   board.style.gridTemplateColumns = boardWidth
   board.style.gridTemplateRows = boardWidth
 
-  board.style.gap = "2px"
+  board.style.gap = "1px"
 }
 const getScreenWidth = () =>
   window.innerWidth > 0 ? window.innerWidth : screen.width
@@ -82,17 +77,16 @@ export function renderBoard({
   cells,
   board,
   state,
-  customize,
 }: {
   board: HTMLElement
   cells: number[][]
   state: Status
-  customize?: Cell
 }) {
   const draw = drawCellsOnMove({ cells, board })
-  renderCells(board, cells, customize)
+
+  renderCells(board, cells)
   if (state === "idle") {
-    startSelector(board, cells)
+    selectorBoard(board, cells)
     return
   }
   if (state === "finished") {

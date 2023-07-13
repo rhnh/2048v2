@@ -23,8 +23,9 @@ export const createButtonWithAction = (
     .fold(id)
 
 export const selectBoardSize =
-  (board: HTMLElement, cells: number[][]) => (boardSize: number) =>
-    createButtonWithAction("Play: 4x4", "play", () => {
+  (board: HTMLElement, cells: number[][], btnLabel: string) =>
+  (boardSize: number) =>
+    createButtonWithAction(btnLabel, "play", () => {
       clearBoard(board)
       cells = generate2DArray(boardSize)
       cells = fillCells(cells, true)(boardSize / 2)
@@ -32,12 +33,21 @@ export const selectBoardSize =
       renderBoard({ board, cells, state: "playing" })
     })
 
-export const boardSize4x4 = (board: HTMLElement, cells: number[][]) =>
-  selectBoardSize(board, cells)(4)
-export const boardSize8x8 = (board: HTMLElement, cells: number[][]) =>
-  selectBoardSize(board, cells)(8)
-export const boardSize6x6 = (board: HTMLElement, cells: number[][]) =>
-  selectBoardSize(board, cells)(6)
+export const boardSize4x4 = (
+  board: HTMLElement,
+  cells: number[][],
+  btnLabel: string,
+) => selectBoardSize(board, cells, btnLabel)(4)
+export const boardSize8x8 = (
+  board: HTMLElement,
+  cells: number[][],
+  btnLabel: string,
+) => selectBoardSize(board, cells, btnLabel)(8)
+export const boardSize6x6 = (
+  board: HTMLElement,
+  cells: number[][],
+  btnLabel: string,
+) => selectBoardSize(board, cells, btnLabel)(6)
 
 export const centerWrapper = (child: HTMLElement): HTMLElement =>
   chain(createElement("div")("wrapper"))
@@ -50,7 +60,7 @@ export const centerWrapper = (child: HTMLElement): HTMLElement =>
     })
     .fold(id)
 
-export const startSelector = (board: HTMLElement, cells: number[][]) =>
+export const selectorBoard = (board: HTMLElement, cells: number[][]) =>
   chain(createElement("article")("start-selector"))
     .map((article: HTMLElement) => {
       article.style.position = "absolute"
@@ -64,9 +74,9 @@ export const startSelector = (board: HTMLElement, cells: number[][]) =>
     })
     .map((article: HTMLElement) => {
       article.append(
-        centerWrapper(boardSize4x4(board, cells)),
-        centerWrapper(boardSize6x6(board, cells)),
-        centerWrapper(boardSize8x8(board, cells)),
+        centerWrapper(boardSize4x4(board, cells, "4x4")),
+        centerWrapper(boardSize6x6(board, cells, "6x6")),
+        centerWrapper(boardSize8x8(board, cells, "8x8")),
         centerWrapper(restartBTN()),
         centerWrapper(displayColorSelectors(board, cells, "idle")),
         centerWrapper(displayRules(board, cells, "idle")),

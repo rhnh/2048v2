@@ -1,4 +1,5 @@
 import { chain, id } from "./tools"
+import { iArray } from "./utils"
 type RGBType = { red: number; green: number; blue: number }
 const shade = ({
   rgb,
@@ -99,3 +100,63 @@ export const getColorShade = (
     .map(rgbToHex) //converts RGB to Hexadecimal
     .map((color: string) => `#${color}`)
     .fold(id) // returns the value
+
+export const getColorShades = ({
+  total,
+  baseColor,
+}: {
+  total: number
+  baseColor: string
+}): string[] => {
+  const colors: string[] = []
+  let i = 0
+  while (i < total) {
+    colors.push(getColorShade(baseColor, i))
+    i++
+  }
+  return colors
+}
+
+/**
+ * - Example: 2^3 = 8
+ * - Since Array index start with a zero, zero returns 0
+ * @param x - value can => 2,4,8,16
+ * @returns an index array
+ */
+export const getExponent = (x: number): number =>
+  x === 0 ? 0 : Math.log(x) / Math.log(2)
+/**
+ * gets all power value of 2 between 2  power value numbers
+ * @param - {power value of 2}
+ * @returns
+ */
+export const rangeBetweenPV = ({
+  cellValue1,
+  cellValue2,
+}: {
+  cellValue1: number
+  cellValue2: number
+}): number[] => {
+  if (!isPVOfTwo(cellValue1) || !isPVOfTwo(cellValue2)) {
+    return []
+  }
+  let values: number[] = []
+  let start = cellValue1 < cellValue2 ? cellValue1 : cellValue2
+  let end = start === cellValue1 ? cellValue2 : cellValue1
+  let i = start
+  let x = getExponent(start)
+  while (i < end) {
+    i = Math.pow(2, x)
+    values.push(i)
+    x++
+  }
+  return values
+}
+
+/**
+ *  - checks, if the 2 numbers of Power Value (PV) of 2
+ *  - Example: 4 is power value of 2 => 2^2 = 4
+ * @param n a nummeric value
+ * @returns true or false
+ */
+export const isPVOfTwo = (n: number): boolean => getExponent(n) % 1 === 0

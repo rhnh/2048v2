@@ -1,4 +1,5 @@
 import { Cell } from "./board"
+import { getColorShade } from "./colors"
 
 export const reverse = (xs: number[]) => xs.slice().reverse()
 export const reverse2d = (xs: number[][]) => xs.map(reverse)
@@ -16,9 +17,28 @@ declare global {
   var globalScore: number
   var globalCells: number[][]
   var globalColors: Partial<Cell>[]
+  var bgColors: string[]
+  var fontColors: string[]
 }
+
 globalThis.globalScore = 0
 globalThis.globalColors = []
+
+globalThis.bgColors = [
+  "#bbada0",
+  "#eee4da",
+  "#eee1c9",
+  "#f3b27a",
+  "#f69664",
+  "#f77c5f",
+  "#f75f3b",
+  "#edd073",
+  "#75a7f1",
+  "#4585f2",
+  "#ef233c",
+  "#e63946",
+]
+globalThis.fontColors = bgColors.map((i) => getColorShade(i + 3, 60))
 
 export const double = (arr: number[]) => {
   const xs = zeroLast([...Array.from(arr)])
