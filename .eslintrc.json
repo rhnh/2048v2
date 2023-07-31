@@ -1,0 +1,10 @@
+{
+  "globals": {
+    "vi": true
+  },
+  "plugins": ["vitest"],
+  "extends": ["plugin:vitest-globals/recommended"],
+  "env": {
+    "vitest-globals/env": true
+  }
+}

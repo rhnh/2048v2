@@ -1,0 +1,14 @@
+# Functionality:
+  ☐ Color editor and themes
+  ✔ Game over @done(23-07-19 10:31)
+  Levels:
+     If the target is reached give to options 
+     ☐ continue and add 1 to base number
+     ☐ stop and show the result 
+
+# UI:
+  ☐ color and color shade
+  ✔ Game over @done(23-07-19 10:31)
+# Css:
+  ☐ Color and shade
+  ☐ Game Over
