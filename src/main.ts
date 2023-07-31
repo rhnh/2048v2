@@ -6,7 +6,7 @@ import { header } from "./layout/header"
 import { Status } from "./tools/utils"
 
 const base = 2
-const target = Math.pow(2, 11)
+const target = Math.pow(2, 6)
 
 declare global {
   var globalScore: number
