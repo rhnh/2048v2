@@ -1,4 +1,3 @@
-import { removeChildren } from "../layout/board"
 import { moveDown, moveLeft, moveRight, moveUp } from "./movements"
 import { restart } from "./utils"
 
