@@ -76,10 +76,12 @@ export const renderBoardOnMoves =
       return
     }
     if (base === 2 && value === target) {
+      globalThis.isPlaying = "pause"
       nextLevel({ board, cells, base: 3, colors, target })
       return
     }
     if (base === 3 && value / base === target) {
+      globalThis.isPlaying = "pause"
       nextLevel({ board, cells, base: 4, colors, target })
       return
     }

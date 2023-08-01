@@ -7,7 +7,7 @@ export type Cell = {
 }
 export type Cells = Cell[][]
 
-export type Status = "playing" | "idle" | "finished"
+export type Status = "playing" | "idle" | "finished" | "pause"
 
 export const id = <T>(x: T): T => x
 export const log = (x: unknown) => {

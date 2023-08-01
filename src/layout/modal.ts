@@ -67,7 +67,7 @@ export const Modal =
       })
       .map((modal: HTMLElement) => {
         removeChildren(board) // clean the board first
-        board.appendChild(modal)
+        board.append(modal)
         return modal
       })
       .fold(id)

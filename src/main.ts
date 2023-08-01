@@ -4,9 +4,13 @@ import { fillMoreCells, generateEmptyCells } from "./tools/tools"
 import { buttonBar } from "./layout/components"
 import { header } from "./layout/header"
 import { Status } from "./tools/utils"
-
+/**
+ * TODO:
+ * add board inside container
+ * TODO modal inside container not board
+ */
 const base = 2
-const target = Math.pow(2, 6)
+const target = Math.pow(2, 2)
 
 declare global {
   var globalScore: number

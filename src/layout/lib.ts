@@ -483,7 +483,10 @@ export const nextLevel = ({
           gameOverMessage(""),
           createButton(
             "Try again",
-            () => setNewBoard({ board, cells, base: 2, colors, target }),
+            () => {
+              globalThis.isPlaying = "playing"
+              setNewBoard({ board, cells, base: 2, colors, target })
+            },
             "status-btn try-again-btn",
           ),
 
@@ -499,6 +502,7 @@ export const nextLevel = ({
             .map((btn: HTMLButtonElement) => {
               btn.onclick = () => {
                 globalThis.globalBase = base
+                globalThis.isPlaying = "playing"
                 const newCells = generateEmptyCells(cells.length)
                 setNewBoard({
                   board,

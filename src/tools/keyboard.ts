@@ -1,3 +1,4 @@
+import { removeChildren } from "../layout/board"
 import { moveDown, moveLeft, moveRight, moveUp } from "./movements"
 import { restart } from "./utils"
 
@@ -36,25 +37,31 @@ export const mobileTouchOption = (board: HTMLElement, draw: Function) => {
     y2: 0,
   }
   let direction: "up" | "down" | "right" | "left" | "none"
-  board.addEventListener(
-    "touchstart",
-    (e) => {
-      e.preventDefault()
-      touches.x1 = e.touches[0].clientX
-      touches.y1 = e.touches[0].clientY
-    },
-    { passive: false },
-  )
-  board.addEventListener(
-    "touchmove",
-    (e) => {
-      e.preventDefault()
-      touches.x2 = e.changedTouches[0].clientX
-      touches.y2 = e.changedTouches[0].clientY
-    },
-    { passive: false },
-  )
-  board.addEventListener("touchend", (e) => {
+  const touchstart = (e: TouchEvent) => {
+    e.preventDefault()
+    if (globalThis.isPlaying === "pause") {
+      board.removeEventListener("touchstart", touchstart, false)
+    }
+    touches.x1 = e.touches[0].clientX
+    touches.y1 = e.touches[0].clientY
+  }
+  board.addEventListener("touchstart", touchstart, { passive: false })
+
+  const touchmove = (e: TouchEvent) => {
+    if (globalThis.isPlaying === "pause") {
+      board.removeEventListener("touchmove", touchmove, false)
+    }
+    e.preventDefault()
+    touches.x2 = e.changedTouches[0].clientX
+    touches.y2 = e.changedTouches[0].clientY
+  }
+  board.addEventListener("touchmove", touchmove, { passive: false })
+
+  const touchend = (e: TouchEvent) => {
+    console.log(globalThis.isPlaying)
+    if (globalThis.isPlaying === "pause") {
+      board.removeEventListener("touchend", touchend, false)
+    }
     e.preventDefault()
     const x = touches.x2 - touches.x1
     const y = touches.y2 - touches.y1
@@ -67,5 +74,6 @@ export const mobileTouchOption = (board: HTMLElement, draw: Function) => {
     if (direction === "up") draw(moveUp)
     if (direction === "left") draw(moveLeft)
     if (direction === "right") draw(moveRight)
-  })
+  }
+  board.addEventListener("touchend", touchend)
 }
