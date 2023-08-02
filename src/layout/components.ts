@@ -19,13 +19,11 @@ export const buttonBar = ({
   cells,
   base,
   colors,
-  target,
 }: {
   board: HTMLElement
   cells: Cells
   base: number
   colors: string[]
-  target: number
 }) =>
   createButtonBar([
     lib.restartBtn("bar restart-bar-btn"),
@@ -35,7 +33,6 @@ export const buttonBar = ({
       base,
       colors,
       className: "setting-bar",
-      target,
     }),
     lib.rulesBtn({
       board,
@@ -43,7 +40,6 @@ export const buttonBar = ({
       base,
       colors,
       className: "setting-bar",
-      target,
     }),
     lib.creditsBtn({
       board,
@@ -51,7 +47,6 @@ export const buttonBar = ({
       base,
       colors,
       className: "setting-bar",
-      target,
     }),
   ])
 
@@ -60,13 +55,11 @@ export const selectBoard = ({
   cells,
   base,
   colors,
-  target,
 }: {
   board: HTMLElement
   cells: Cells
   base: number
   colors: string[]
-  target: number
 }) =>
   lib.createSelectBoard(board)([
     lib.centerWrapper(
@@ -76,14 +69,19 @@ export const selectBoard = ({
         btnLabel: "4x4",
         base,
         colors,
-        target,
       }),
     ),
     lib.centerWrapper(
-      lib.boardSize6x6({ board, cells, btnLabel: "6x6", base, colors, target }),
+      lib.boardSize6x6({
+        board,
+        cells,
+        btnLabel: "6x6",
+        base,
+        colors,
+      }),
     ),
     lib.centerWrapper(
-      lib.boardSize8x8({ board, cells, btnLabel: "8x8", base, colors, target }),
+      lib.boardSize8x8({ board, cells, btnLabel: "8x8", base, colors }),
     ),
     // lib.centerWrapper(lib.restartBtn("setting selection-restart")),
     lib.centerWrapper(
@@ -93,7 +91,6 @@ export const selectBoard = ({
         base,
         colors,
         className: "setting",
-        target,
       }),
     ),
     lib.centerWrapper(
@@ -103,7 +100,6 @@ export const selectBoard = ({
         base,
         colors,
         className: "setting",
-        target,
       }),
     ),
 
@@ -114,7 +110,6 @@ export const selectBoard = ({
         base,
         colors,
         className: "setting",
-        target,
       }),
     ),
   ])

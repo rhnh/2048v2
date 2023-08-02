@@ -4,13 +4,8 @@ import { fillMoreCells, generateEmptyCells } from "./tools/tools"
 import { buttonBar } from "./layout/components"
 import { header } from "./layout/header"
 import { Status } from "./tools/utils"
-/**
- * TODO:
- * add board inside container
- * TODO modal inside container not board
- */
+
 const base = 2
-const target = Math.pow(2, 2)
 
 declare global {
   var globalScore: number
@@ -51,6 +46,6 @@ const cells = fillMoreCells({
 document.body.append(
   header(0, cells),
   board,
-  buttonBar({ board, cells, colors, base, target }),
+  buttonBar({ board, cells, colors, base }),
 )
-renderBoard({ cells, board, state: "idle", base, colors, target })
+renderBoard({ cells, board, state: "idle", base, colors })

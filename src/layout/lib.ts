@@ -24,14 +24,12 @@ export const colorCustomization = ({
   colors,
   cells,
   className,
-  target,
 }: {
   board: HTMLElement
   cells: Cells
   base: number
   colors: string[]
   className: string
-  target: number
 }) => {
   const btnColors = colors.map((color, i) => colorBox(colors, color, i, base))
 
@@ -52,7 +50,6 @@ export const colorCustomization = ({
         colors,
         className: "color-plate",
         showOnClose: true,
-        target,
       })([
         wrapper(
           [changeBoardColor(board, "board-color"), ...btnColors],
@@ -108,14 +105,12 @@ export const rulesBtn = ({
   colors,
   cells,
   className,
-  target,
 }: {
   board: HTMLElement
   cells: Cells
   base: number
   colors: string[]
   className: string
-  target: number
 }) =>
   createButton(
     "Rules",
@@ -133,7 +128,6 @@ export const rulesBtn = ({
         base,
         colors,
         showOnClose: true,
-        target,
       })([rulesParagraph])
     },
     `${className ?? ""} rules-btn`,
@@ -144,14 +138,12 @@ export const creditsBtn = ({
   base,
   colors,
   className,
-  target,
 }: {
   base: number
   colors: string[]
   board: HTMLElement
   cells: Cells
   className: string
-  target: number
 }) =>
   createButton(
     "Credits",
@@ -169,7 +161,6 @@ export const creditsBtn = ({
         base,
         colors,
         showOnClose: true,
-        target,
       })([creditsParagraph])
     },
     ` ${className ?? ""} credits-btn,`,
@@ -227,7 +218,6 @@ export const selectBoardSize =
     btnLabel,
     colors,
     className,
-    target,
   }: {
     colors: string[]
     board: HTMLElement
@@ -235,7 +225,6 @@ export const selectBoardSize =
     btnLabel: string
     base: number
     className: string
-    target: number
   }) =>
   (boardSize: number) =>
     createButton(
@@ -250,7 +239,7 @@ export const selectBoardSize =
           total: 2,
         })
 
-        renderBoard({ board, cells, state: "playing", base, colors, target })
+        renderBoard({ board, cells, state: "playing", base, colors })
       },
       `play ${className}`,
     )
@@ -261,14 +250,12 @@ export const boardSize4x4 = ({
   btnLabel,
   base,
   colors,
-  target,
 }: {
   board: HTMLElement
   cells: Cells
   btnLabel: string
   base: number
   colors: string[]
-  target: number
 }) =>
   selectBoardSize({
     board,
@@ -277,7 +264,6 @@ export const boardSize4x4 = ({
     base,
     colors,
     className: "four",
-    target,
   })(4)
 export const boardSize8x8 = ({
   board,
@@ -285,14 +271,12 @@ export const boardSize8x8 = ({
   btnLabel,
   base,
   colors,
-  target,
 }: {
   board: HTMLElement
   cells: Cells
   btnLabel: string
   base: number
   colors: string[]
-  target: number
 }) =>
   selectBoardSize({
     board,
@@ -301,7 +285,6 @@ export const boardSize8x8 = ({
     base,
     colors,
     className: "eight",
-    target,
   })(8)
 export const boardSize6x6 = ({
   board,
@@ -309,14 +292,12 @@ export const boardSize6x6 = ({
   btnLabel,
   base,
   colors,
-  target,
 }: {
   board: HTMLElement
   cells: Cells
   btnLabel: string
   base: number
   colors: string[]
-  target: number
 }) =>
   selectBoardSize({
     board,
@@ -325,7 +306,6 @@ export const boardSize6x6 = ({
     base,
     colors,
     className: "six",
-    target,
   })(6)
 export const centeredElement = (element: HTMLElement, cells: Cells) => {
   const screenWidth = getScreenWidth()
@@ -396,13 +376,11 @@ const setNewBoard = ({
   board,
   base,
   colors,
-  target,
 }: {
   cells: Cells
   board: HTMLElement
   base: number
   colors: string[]
-  target: number
 }) => {
   cells = fillMoreCells({
     cells: generateEmptyCells(cells.length),
@@ -410,21 +388,21 @@ const setNewBoard = ({
     base,
     isInitial: true,
   })
-  renderBoard({ cells, board, state: "playing", base, colors, target })
+  renderBoard({ cells, board, state: "playing", base, colors })
 }
 
-export const gameOver = ({
+export const renderGameOver = ({
   base,
   board,
   cells,
   colors,
-  target,
+  message,
 }: {
   colors: string[]
   board: HTMLElement
   cells: Cells
   base: number
-  target: number
+  message?: string
 }) =>
   Modal({
     board,
@@ -434,17 +412,17 @@ export const gameOver = ({
     showOnClose: false,
     base,
     colors,
-    target,
   })([
     centeredElement(
       wrapper(
         [
           gameOverMessage(
-            `You lost! <br/> You are score <strong> ${globalThis.globalScore} </strong> `,
+            message ??
+              `You lost! <br/> You are score <strong> ${globalThis.globalScore} </strong> `,
           ),
           createButton(
             "Try again",
-            () => setNewBoard({ board, cells, base: 2, colors, target }),
+            () => setNewBoard({ board, cells, base: 2, colors }),
             "status-btn try-again-btn",
           ),
         ],
@@ -459,80 +437,116 @@ export const nextLevel = ({
   cells,
   base,
   colors,
-  target,
 }: {
   cells: Cells
   base: number
   board: HTMLElement
   colors: string[]
-  target: number
 }) => {
-  return Modal({
-    board,
-    cells,
-    state: "playing",
-    visibility: "visible",
-    base,
-    colors,
-    showOnClose: false,
-    target,
-  })([
-    centeredElement(
-      wrapper(
-        [
-          gameOverMessage(""),
-          createButton(
-            "Try again",
-            () => {
-              globalThis.isPlaying = "playing"
-              setNewBoard({ board, cells, base: 2, colors, target })
-            },
-            "status-btn try-again-btn",
-          ),
-
-          chain(createElement("button")("status-btn next-level-btn"))
-            .map((btn: HTMLButtonElement) => {
-              btn.innerText = "Keep playing"
-              if (base === 4) {
-                btn.disabled = true
-                btn.style.display = "none"
-              }
-              return btn
-            })
-            .map((btn: HTMLButtonElement) => {
-              btn.onclick = () => {
-                globalThis.globalBase = base
-                globalThis.isPlaying = "playing"
-                const newCells = generateEmptyCells(cells.length)
-                setNewBoard({
-                  board,
-                  cells: newCells,
-                  base,
-                  colors,
-                  target,
-                })
-                removeChildren(document.body)
-                globalThis.globalCells = cellsToString(newCells)
-                document.body.append(
-                  header(0, cells),
-                  board,
-                  buttonBar({
-                    board,
-                    cells,
-                    colors,
-                    base,
-                    target,
-                  }),
-                )
-              }
-
-              return btn
-            })
-            .fold(id),
-        ],
-        "next-level",
-      ),
+  if (base < 4) {
+    return Modal({
+      board,
       cells,
-    ),
-  ])
+      state: "playing",
+      visibility: "visible",
+      base,
+      colors,
+      showOnClose: false,
+    })([
+      centeredElement(
+        wrapper(
+          [
+            tryAgain({ board, cells, colors }),
+            nextButton({ base, board, cells, colors }),
+          ],
+          "next-level",
+        ),
+        cells,
+      ),
+    ])
+  } else {
+    return Modal({
+      board,
+      cells,
+      state: "playing",
+      visibility: "visible",
+      base,
+      colors,
+      showOnClose: false,
+    })([
+      centeredElement(
+        wrapper(
+          [gameOverMessage("You won"), tryAgain({ board, cells, colors })],
+          "next-level",
+        ),
+        cells,
+      ),
+    ])
+  }
 }
+export const tryAgain = ({
+  board,
+  cells,
+  colors,
+}: {
+  board: HTMLElement
+  cells: Cells
+  colors: string[]
+}) =>
+  createButton(
+    "Try again",
+    () => {
+      globalThis.isPlaying = "playing"
+      setNewBoard({ board, cells, base: 2, colors })
+    },
+    "status-btn try-again-btn",
+  )
+export const nextButton = ({
+  base,
+  cells,
+  board,
+  colors,
+}: {
+  base: number
+  cells: Cells
+  board: HTMLElement
+  colors: string[]
+}) =>
+  chain(createElement("button")("status-btn next-level-btn"))
+    .map((btn: HTMLButtonElement) => {
+      btn.innerText = "Keep playing"
+      if (base > 4 || globalThis.globalBase > 4) {
+        btn.disabled = true
+        btn.style.display = "none"
+      }
+      return btn
+    })
+    .map((btn: HTMLButtonElement) => {
+      btn.onclick = () => {
+        base = base + 1
+        globalThis.globalBase = base
+        globalThis.isPlaying = "playing"
+        const newCells = generateEmptyCells(cells.length)
+        setNewBoard({
+          board,
+          cells: newCells,
+          base,
+          colors,
+        })
+        removeChildren(document.body)
+        globalThis.globalCells = cellsToString(newCells)
+        document.body.append(
+          header(globalThis.globalScore, cells),
+          board,
+          buttonBar({
+            board,
+            cells,
+            colors,
+            base,
+          }),
+        )
+      }
+
+      return btn
+    })
+    .fold(id)

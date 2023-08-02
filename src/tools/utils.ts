@@ -69,3 +69,6 @@ export const stringToCells = (str: string) => {
   while (f.length) results.push(f.splice(0, getLen(firstArray.length)))
   return results
 }
+
+export const getTarget = (base: number) =>
+  base > 2 ? Math.pow(2, 11) * base : Math.pow(2, 11)
