@@ -59,7 +59,13 @@ export const renderBoardCells = ({
   colors: string[]
 }) => {
   globalThis.globalCells = cellsToString(cells)
+  const highestCellValue = getHightestValue(cells)
 
+  if (highestCellValue === getTarget(base)) {
+    globalThis.isPlaying = "pause"
+    nextLevel({ board, cells, base, colors })
+    return
+  }
   updateCurrentScores()
   updateBestScores()
   removeChildren(board)

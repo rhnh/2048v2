@@ -165,7 +165,7 @@ const getFontBoardSizeEight = ({
 }): number => {
   if (actualScreenWidth <= xxSmallScreen320) {
     if (digitLength < 3) return 24
-    return 20
+    return 16
   }
   if (actualScreenWidth <= xSmallScreen360) {
     if (digitLength < 3) return 22

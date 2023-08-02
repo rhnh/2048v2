@@ -24,7 +24,7 @@ export const game =
   (fn: (xs: Cells) => Cells) => {
     const highestCellValue = getHightestValue(cells)
 
-    const target = getTarget(base)
+    let target = getTarget(base)
     if (highestCellValue === target) {
       globalThis.isPlaying = "pause"
       nextLevel({ board, cells, base, colors })
@@ -60,6 +60,12 @@ export const game =
 
       removeChildren(board)
       renderGameOver({ board, cells, base, colors })
+      return
+    }
+
+    if (highestCellValue === getTarget(base)) {
+      globalThis.isPlaying = "pause"
+      nextLevel({ board, cells, base, colors })
       return
     }
 
