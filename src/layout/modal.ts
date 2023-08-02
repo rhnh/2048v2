@@ -13,7 +13,6 @@ export const Modal =
     colors,
     base,
     showOnClose = true,
-    target,
   }: {
     board: HTMLElement
     cells: Cells
@@ -24,7 +23,6 @@ export const Modal =
     colors: string[]
     base: number
     showOnClose: boolean
-    target: number
   }) =>
   (elements: HTMLElement[]): HTMLElement =>
     chain(createElement("article")("modal"))
@@ -56,7 +54,7 @@ export const Modal =
           ) {
             localStorage.setItem("best-score", `${globalThis.globalScore}`)
           }
-          renderBoard({ cells, board, state, colors, base, target })
+          renderBoard({ cells, board, state, colors, base })
         }
         return modal
       })
