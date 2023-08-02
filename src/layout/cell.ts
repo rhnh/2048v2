@@ -16,7 +16,15 @@ export function createCellElement({
 }): HTMLSpanElement {
   return chain(createElement("span")("cells"))
     .map((span: HTMLSpanElement) => {
-      span.innerText = cell.value === 0 ? "" : `${cell.value}`
+      const cellText = createElement("p")("cell-text")
+      cellText.style.padding = "0px"
+      cellText.style.margin = "0px"
+
+      cellText.innerText = cell.value === 0 ? "" : `${cell.value}`
+      cellText.className += ` cell-${boardSize}x${boardSize}--${
+        cell.value.toString().length
+      }`
+      span.appendChild(cellText)
       return span
     })
     .map((span: HTMLSpanElement) => {
@@ -50,19 +58,19 @@ export function createCellElement({
 
             if (i === getExponent(cellValue)) {
               span.style.backgroundColor = getColorShade(colors[i + 1], -1.4)
-              span.style.color = getColorShade(c, 17)
+              span.style.color = getColorShade(c, 1, 34.34)
             }
           }
 
           if (i === getExponent(cell.value)) {
             span.style.backgroundColor = getColorShade(colors[i], -1.4)
-            span.style.color = getColorShade(c, 17)
+            span.style.color = getColorShade(c, 1, 34.34)
           }
         }
 
         if (base === 2 && i === getExponent(cell.value)) {
           span.style.backgroundColor = getColorShade(colors[i], -1.4)
-          span.style.color = getColorShade(c, 17)
+          span.style.color = getColorShade(c, 5)
         } else {
           if (i === getExponent(cell.value) / base) {
             span.style.backgroundColor = getColorShade(colors[i], -1.4)

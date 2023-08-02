@@ -361,3 +361,7 @@ label {
 .six {
   background-color: #ede0c8
 }
+
+.cell-8x8--4 {
+  transform: rotate(-45deg);
+}
