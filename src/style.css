@@ -147,7 +147,7 @@ body {
 
 .selection {
   background-color: #b9b0afc9;
-  border-top-left-radius: 250px 15px;
+  border-top-left-radius: 250px 10px;
   border-bottom-left-radius: 20px 45px;
   border-bottom-right-radius: 105px 15px;
 }
